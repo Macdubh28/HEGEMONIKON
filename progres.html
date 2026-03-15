@@ -1,1 +1,365 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Progres</title></head><body><script>window.location="index.html"</script></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HEGEMONIKON — Maîtrise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --noir: #080808; --noir-card: #141414;
+    --bronze: #C9A84C; --bronze-dim: #8B6914; --bronze-pale: #e8d5a3;
+    --texte: #d4c9b0; --texte-dim: #7a7060; --texte-pale: #4a4438;
+    --or-ligne: rgba(201,168,76,0.2);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--noir); color: var(--texte); font-family: 'Cormorant Garamond', Georgia, serif; min-height: 100vh; }
+  body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,168,76,0.04) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+
+  header { position: relative; z-index: 1; padding: 48px 32px 32px; display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1px solid var(--or-ligne); }
+  .logo { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 600; letter-spacing: 0.35em; color: var(--bronze); }
+  .logo span { color: var(--texte-dim); font-weight: 400; }
+  nav { display: flex; gap: 32px; }
+  nav a { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.25em; color: var(--texte-dim); text-decoration: none; text-transform: uppercase; transition: color 0.3s; }
+  nav a:hover { color: var(--bronze); }
+  nav a.active { color: var(--bronze-pale); }
+
+  main { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; padding: 64px 32px 80px; }
+
+  .page-titre-bloc { margin-bottom: 56px; animation: fadeUp 0.8s ease both; }
+  .page-eyebrow { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--bronze-dim); text-transform: uppercase; margin-bottom: 12px; }
+  .page-titre { font-family: 'Cinzel', serif; font-size: clamp(24px, 4vw, 36px); font-weight: 400; color: var(--bronze-pale); letter-spacing: 0.1em; }
+
+  /* ─── STATS GRILLE ─── */
+  .stats-grille {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px;
+    margin-bottom: 48px;
+    animation: fadeUp 0.8s ease 0.1s both;
+  }
+  @media (min-width: 600px) { .stats-grille { grid-template-columns: repeat(4, 1fr); } }
+
+  .stat-card {
+    background: var(--noir-card); padding: 28px 24px;
+    border: 1px solid var(--or-ligne);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .stat-card-num {
+    font-family: 'Cinzel', serif; font-size: clamp(32px, 6vw, 48px);
+    color: var(--bronze); line-height: 1;
+  }
+  .stat-card-label {
+    font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.3em;
+    color: var(--texte-dim); text-transform: uppercase;
+  }
+
+  /* ─── NIVEAU ACTUEL ─── */
+  .niveau-actuel {
+    padding: 32px; border: 1px solid var(--or-ligne);
+    background: var(--noir-card); margin-bottom: 48px;
+    animation: fadeUp 0.8s ease 0.2s both;
+    position: relative; overflow: hidden;
+  }
+  .niveau-actuel::after {
+    content: ''; position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--bronze-dim);
+  }
+  .niveau-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--bronze-dim); text-transform: uppercase; margin-bottom: 12px; }
+  .niveau-titre { font-family: 'Cinzel', serif; font-size: clamp(20px, 3vw, 28px); color: var(--bronze-pale); letter-spacing: 0.1em; margin-bottom: 12px; }
+  .niveau-desc { font-style: italic; font-size: 16px; color: var(--texte-dim); line-height: 1.7; margin-bottom: 16px; }
+  .niveau-barre-fond { height: 3px; background: var(--or-ligne); margin-top: 16px; }
+  .niveau-barre-prog { height: 3px; background: var(--bronze); transition: width 1s ease; }
+  .niveau-pct { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.2em; color: var(--bronze-dim); margin-top: 6px; text-align: right; }
+
+  /* ─── CALENDRIER STREAK ─── */
+  .calendrier-bloc {
+    margin-bottom: 48px;
+    animation: fadeUp 0.8s ease 0.3s both;
+  }
+  .section-titre {
+    font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.3em;
+    color: var(--bronze-dim); text-transform: uppercase;
+    margin-bottom: 20px; padding-bottom: 12px;
+    border-bottom: 1px solid var(--or-ligne);
+  }
+  .calendrier-grille {
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;
+  }
+  .cal-jour-label {
+    font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.15em;
+    color: var(--texte-pale); text-align: center; padding: 4px 0;
+    text-transform: uppercase;
+  }
+  .cal-case {
+    aspect-ratio: 1; border: 1px solid var(--or-ligne);
+    transition: all 0.2s; cursor: default;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cinzel', serif; font-size: 9px; color: var(--texte-pale);
+  }
+  .cal-case.actif { background: rgba(201,168,76,0.15); border-color: var(--bronze-dim); color: var(--bronze); }
+  .cal-case.fort { background: rgba(201,168,76,0.3); border-color: var(--bronze); color: var(--bronze-pale); }
+  .cal-case.vide { border-color: transparent; }
+
+  /* ─── DÉCLENCHEURS ─── */
+  .declencheurs-bloc {
+    margin-bottom: 48px;
+    animation: fadeUp 0.8s ease 0.35s both;
+  }
+  .decl-liste { display: flex; flex-direction: column; gap: 8px; }
+  .decl-item { display: flex; align-items: center; gap: 12px; }
+  .decl-nom { font-style: italic; font-size: 15px; color: var(--texte-dim); min-width: 180px; }
+  .decl-barre-fond { flex: 1; height: 2px; background: var(--or-ligne); }
+  .decl-barre-val { height: 2px; background: var(--bronze-dim); transition: width 1s ease; }
+  .decl-count { font-family: 'Cinzel', serif; font-size: 11px; color: var(--bronze-dim); min-width: 24px; text-align: right; }
+
+  /* ─── NIVEAUX DESCRIPTION ─── */
+  .niveaux-bloc {
+    animation: fadeUp 0.8s ease 0.4s both;
+  }
+  .niveau-row {
+    display: flex; gap: 20px; align-items: flex-start;
+    padding: 20px 24px; border: 1px solid var(--or-ligne);
+    margin-bottom: 2px; background: var(--noir-card);
+    transition: border-color 0.3s;
+  }
+  .niveau-row.courant { border-color: var(--bronze-dim); }
+  .niveau-row-num { font-family: 'Cinzel', serif; font-size: 22px; color: var(--bronze-dim); min-width: 32px; }
+  .niveau-row.courant .niveau-row-num { color: var(--bronze); }
+  .niveau-row-info {}
+  .niveau-row-titre { font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 0.1em; color: var(--bronze-pale); margin-bottom: 6px; }
+  .niveau-row-desc { font-style: italic; font-size: 14px; color: var(--texte-dim); line-height: 1.6; }
+  .niveau-row-seuil { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.2em; color: var(--texte-pale); margin-top: 6px; text-transform: uppercase; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 600px) { header { flex-direction: column; gap: 20px; } nav { gap: 16px; flex-wrap: wrap; } main { padding: 40px 16px 60px; } .decl-nom { min-width: 120px; font-size: 13px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">HEGEMONIKON <span>— le guide intérieur</span></div>
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="matin.html">Matin</a>
+    <a href="journal.html">Journal</a>
+    <a href="archive.html">Archive</a>
+    <a href="progres.html" class="active">Maîtrise</a>
+  </nav>
+</header>
+
+<main>
+  <div class="page-titre-bloc">
+    <p class="page-eyebrow">Prokopē — le progrès sans fin</p>
+    <h1 class="page-titre">Niveau de Maîtrise</h1>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grille">
+    <div class="stat-card"><span class="stat-card-num" id="s-total">0</span><span class="stat-card-label">Entrées totales</span></div>
+    <div class="stat-card"><span class="stat-card-num" id="s-streak">0</span><span class="stat-card-label">Jours consécutifs</span></div>
+    <div class="stat-card"><span class="stat-card-num" id="s-semaine">0</span><span class="stat-card-label">Cette semaine</span></div>
+    <div class="stat-card"><span class="stat-card-num" id="s-mois">0</span><span class="stat-card-label">Ce mois</span></div>
+  </div>
+
+  <!-- Niveau actuel -->
+  <div class="niveau-actuel">
+    <p class="niveau-label">Niveau actuel</p>
+    <p class="niveau-titre" id="n-titre">—</p>
+    <p class="niveau-desc" id="n-desc">—</p>
+    <div class="niveau-barre-fond"><div class="niveau-barre-prog" id="n-barre" style="width:0%"></div></div>
+    <p class="niveau-pct" id="n-pct">—</p>
+  </div>
+
+  <!-- Calendrier 28 jours -->
+  <div class="calendrier-bloc">
+    <p class="section-titre">Activité — 28 derniers jours</p>
+    <div class="calendrier-grille" id="calendrier">
+      <div class="cal-jour-label">L</div>
+      <div class="cal-jour-label">M</div>
+      <div class="cal-jour-label">M</div>
+      <div class="cal-jour-label">J</div>
+      <div class="cal-jour-label">V</div>
+      <div class="cal-jour-label">S</div>
+      <div class="cal-jour-label">D</div>
+    </div>
+  </div>
+
+  <!-- Déclencheurs fréquents -->
+  <div class="declencheurs-bloc">
+    <p class="section-titre">Déclencheurs les plus fréquents</p>
+    <div class="decl-liste" id="decl-liste">
+      <p style="font-style:italic; color:var(--texte-pale); font-size:14px">Aucune donnée encore. Commence à journaliser.</p>
+    </div>
+  </div>
+
+  <!-- Les 4 niveaux -->
+  <div class="niveaux-bloc">
+    <p class="section-titre">Les 4 niveaux de la Prokopē</p>
+    <div class="niveau-row" id="n-row-1">
+      <span class="niveau-row-num">I</span>
+      <div class="niveau-row-info">
+        <p class="niveau-row-titre">Réactif</p>
+        <p class="niveau-row-desc">Tu réagis. Tu le regrettes après. La passion parle avant toi.</p>
+        <p class="niveau-row-seuil">Seuil : débuter la pratique</p>
+      </div>
+    </div>
+    <div class="niveau-row" id="n-row-2">
+      <span class="niveau-row-num">II</span>
+      <div class="niveau-row-info">
+        <p class="niveau-row-titre">Conscient</p>
+        <p class="niveau-row-desc">Tu sens la passion monter. Tu la freines parfois. Tu te reprends après.</p>
+        <p class="niveau-row-seuil">Seuil : 7 entrées</p>
+      </div>
+    </div>
+    <div class="niveau-row" id="n-row-3">
+      <span class="niveau-row-num">III</span>
+      <div class="niveau-row-info">
+        <p class="niveau-row-titre">Maître</p>
+        <p class="niveau-row-desc">Tu catches la représentation avant l'assentiment. Tu choisis ta réponse en temps réel.</p>
+        <p class="niveau-row-seuil">Seuil : 21 entrées</p>
+      </div>
+    </div>
+    <div class="niveau-row" id="n-row-4">
+      <span class="niveau-row-num">IV</span>
+      <div class="niveau-row-info">
+        <p class="niveau-row-titre">Inébranlable</p>
+        <p class="niveau-row-desc">La situation ne t'affecte plus au même endroit. Le calme précède la réflexion.</p>
+        <p class="niveau-row-seuil">Seuil : 42 entrées</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+const NIVEAUX_DATA = [
+  { n: 1, titre: 'I — Réactif', desc: 'Tu réagis. Tu le regrettes après. Mais tu as commencé. C\'est le premier courage.', seuil: 0, prochain: 7 },
+  { n: 2, titre: 'II — Conscient', desc: 'Tu sens la passion monter. La conscience précède maintenant la réaction. C\'est l\'éveil.', seuil: 7, prochain: 21 },
+  { n: 3, titre: 'III — Maître', desc: 'Tu interviens entre le stimulus et la réponse. L\'espace s\'élargit. La citadelle se construit.', seuil: 21, prochain: 42 },
+  { n: 4, titre: 'IV — Inébranlable', desc: 'Le calme précède la réflexion. Tu as forgé ce que peu atteignent. Continue — l\'inébranlable ne suppose jamais acquis.', seuil: 42, prochain: null },
+];
+
+function calcNiveau(total) {
+  if (total >= 42) return 3;
+  if (total >= 21) return 2;
+  if (total >= 7)  return 1;
+  return 0;
+}
+
+function calcStreak(entries) {
+  let streak = 0;
+  const dates = [...new Set(entries.map(e => new Date(e.date).toDateString()))];
+  const aujourd = new Date();
+  for (let i = 0; i < 365; i++) {
+    const d = new Date(aujourd); d.setDate(d.getDate() - i);
+    if (dates.includes(d.toDateString())) streak++;
+    else if (i > 0) break;
+  }
+  return streak;
+}
+
+function construireCalendrier(entries) {
+  const cal = document.getElementById('calendrier');
+  const dateSet = new Set(entries.map(e => new Date(e.date).toDateString()));
+  const countMap = {};
+  entries.forEach(e => {
+    const k = new Date(e.date).toDateString();
+    countMap[k] = (countMap[k] || 0) + 1;
+  });
+
+  const aujourd = new Date();
+  // Trouver le lundi de départ (4 semaines en arrière)
+  const lundiDepart = new Date(aujourd);
+  lundiDepart.setDate(aujourd.getDate() - aujourd.getDay() + 1 - 21);
+  lundiDepart.setHours(0,0,0,0);
+
+  for (let i = 0; i < 28; i++) {
+    const d = new Date(lundiDepart);
+    d.setDate(lundiDepart.getDate() + i);
+    const k = d.toDateString();
+    const count = countMap[k] || 0;
+    const div = document.createElement('div');
+    div.className = 'cal-case';
+    if (d > aujourd) { div.classList.add('vide'); }
+    else if (count >= 2) { div.classList.add('fort'); div.textContent = d.getDate(); }
+    else if (count === 1) { div.classList.add('actif'); div.textContent = d.getDate(); }
+    else { div.textContent = d.getDate(); }
+    cal.appendChild(div);
+  }
+}
+
+function construireDeclencheurs(entries) {
+  const map = {};
+  entries.forEach(e => {
+    (e.declencheurs || []).forEach(d => {
+      map[d] = (map[d] || 0) + 1;
+    });
+  });
+  const sorted = Object.entries(map).sort((a,b) => b[1]-a[1]).slice(0, 6);
+  const liste = document.getElementById('decl-liste');
+  if (sorted.length === 0) return;
+  const max = sorted[0][1];
+  liste.innerHTML = '';
+  sorted.forEach(([nom, count]) => {
+    const pct = Math.round((count / max) * 100);
+    const row = document.createElement('div');
+    row.className = 'decl-item';
+    row.innerHTML = `
+      <span class="decl-nom">${nom}</span>
+      <div class="decl-barre-fond"><div class="decl-barre-val" style="width:${pct}%"></div></div>
+      <span class="decl-count">${count}</span>
+    `;
+    liste.appendChild(row);
+  });
+}
+
+function init() {
+  const entries = JSON.parse(localStorage.getItem('hegemonikon_entries') || '[]');
+  const total = entries.length;
+  const streak = calcStreak(entries);
+  const nIdx = calcNiveau(total);
+  const nData = NIVEAUX_DATA[nIdx];
+
+  document.getElementById('s-total').textContent = total;
+  document.getElementById('s-streak').textContent = streak;
+
+  const now = new Date();
+  const lundi = new Date(now); lundi.setDate(now.getDate() - now.getDay() + 1); lundi.setHours(0,0,0,0);
+  const semaine = entries.filter(e => new Date(e.date) >= lundi).length;
+  document.getElementById('s-semaine').textContent = semaine;
+
+  const mois = entries.filter(e => {
+    const d = new Date(e.date);
+    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+  }).length;
+  document.getElementById('s-mois').textContent = mois;
+
+  // Niveau
+  document.getElementById('n-titre').textContent = nData.titre;
+  document.getElementById('n-desc').textContent = nData.desc;
+
+  let pct = 0, pctLabel = '';
+  if (nData.prochain) {
+    const base = nData.seuil;
+    pct = Math.min(100, Math.round(((total - base) / (nData.prochain - base)) * 100));
+    pctLabel = pct + '% vers le niveau suivant (' + total + ' / ' + nData.prochain + ' entrées)';
+  } else {
+    pct = 100;
+    pctLabel = 'Niveau maximum atteint — la pratique continue';
+  }
+  setTimeout(() => {
+    document.getElementById('n-barre').style.width = pct + '%';
+  }, 300);
+  document.getElementById('n-pct').textContent = pctLabel;
+
+  // Marquer niveau courant
+  document.getElementById('n-row-' + (nIdx + 1)).classList.add('courant');
+
+  construireCalendrier(entries);
+  construireDeclencheurs(entries);
+}
+
+init();
+</script>
+</body>
+</html>

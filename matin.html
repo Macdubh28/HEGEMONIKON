@@ -1,1 +1,122 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Matin</title></head><body><script>window.location="index.html"</script></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HEGEMONIKON - Matin</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--noir:#080808;--noir-card:#141414;--bronze:#C9A84C;--bronze-dim:#8B6914;--bronze-pale:#e8d5a3;--texte:#d4c9b0;--texte-dim:#7a7060;--texte-pale:#4a4438;--or-ligne:rgba(201,168,76,0.2)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--noir);color:var(--texte);font-family:'Cormorant Garamond',Georgia,serif;min-height:100vh}
+header{padding:40px 32px 28px;display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--or-ligne)}
+.logo{font-family:'Cinzel',serif;font-size:13px;font-weight:600;letter-spacing:.35em;color:var(--bronze)}
+.logo span{color:var(--texte-dim);font-weight:400}
+nav{display:flex;gap:28px}
+nav a{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.25em;color:var(--texte-dim);text-decoration:none;text-transform:uppercase;transition:color .3s}
+nav a:hover{color:var(--bronze)}
+nav a.active{color:var(--bronze-pale)}
+main{max-width:720px;margin:0 auto;padding:56px 32px 80px}
+.eyebrow{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.4em;color:var(--bronze-dim);text-transform:uppercase;margin-bottom:10px}
+h1{font-family:'Cinzel',serif;font-size:clamp(22px,4vw,34px);font-weight:400;color:var(--bronze-pale);letter-spacing:.1em;margin-bottom:8px}
+.date{font-style:italic;font-size:15px;color:var(--texte-dim);margin-bottom:48px}
+.citation{padding:24px 28px;border:1px solid var(--or-ligne);background:var(--noir-card);margin-bottom:40px}
+.citation p{font-style:italic;font-size:18px;line-height:1.7;color:var(--texte-dim);margin-bottom:10px}
+.citation span{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.2em;color:var(--bronze)}
+.st{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.35em;color:var(--bronze-dim);text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--or-ligne)}
+.qb{margin-bottom:32px}
+.qh{font-size:13px;color:var(--texte-pale);font-style:italic;margin-bottom:10px}
+textarea{width:100%;min-height:90px;background:var(--noir-card);border:1px solid var(--or-ligne);color:var(--texte);font-family:'Cormorant Garamond',serif;font-size:17px;line-height:1.7;padding:16px 20px;resize:vertical;outline:none;transition:border-color .3s}
+textarea:focus{border-color:var(--bronze-dim)}
+textarea::placeholder{color:var(--texte-pale);font-style:italic}
+.obs-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.obs{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.15em;padding:8px 12px;border:1px solid var(--or-ligne);color:var(--texte-dim);cursor:pointer;transition:all .2s;text-transform:uppercase}
+.obs:hover{border-color:var(--bronze-dim);color:var(--bronze)}
+.obs.on{border-color:var(--bronze);color:var(--bronze);background:rgba(201,168,76,.05)}
+.mantras{display:flex;flex-direction:column;gap:6px;margin-bottom:32px}
+.m{padding:14px 18px;border:1px solid var(--or-ligne);background:var(--noir-card);cursor:pointer;transition:all .3s}
+.m:hover{border-color:var(--bronze-dim)}
+.m.on{border-color:var(--bronze)}
+.m p{font-style:italic;font-size:16px;color:var(--texte-dim);line-height:1.6;transition:color .3s}
+.m.on p{color:var(--texte)}
+.m small{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.2em;color:var(--bronze-dim)}
+.btn{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.3em;padding:15px 36px;background:var(--bronze-dim);color:var(--noir);border:none;cursor:pointer;text-transform:uppercase;transition:all .3s;width:100%}
+.btn:hover{background:var(--bronze)}
+.ok{display:none;padding:16px 20px;border:1px solid rgba(42,92,63,.4);background:rgba(42,92,63,.08);margin-top:16px}
+.ok.v{display:block}
+.ok p{font-style:italic;font-size:17px;color:#5a9a7a}
+hr{border:none;border-top:1px solid var(--or-ligne);margin:32px 0}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">HEGEMONIKON <span>- le guide interieur</span></div>
+<nav>
+<a href="index.html">Accueil</a>
+<a href="matin.html" class="active">Matin</a>
+<a href="journal.html">Journal</a>
+<a href="archive.html">Archive</a>
+<a href="progres.html">Maitrise</a>
+</nav>
+</header>
+<main>
+<p class="eyebrow">Praemeditatio malorum</p>
+<h1>Rituel du Matin</h1>
+<p class="date" id="d"></p>
+<div class="citation">
+<p>Au lever du jour, dis-toi : je vais rencontrer un indiscret, un ingrat, un violent, un fourbe. Tout cela leur arrive par ignorance du bien et du mal.</p>
+<span>Marc Aurele - Pensees II.1</span>
+</div>
+<div class="qb">
+<p class="st">I - Obstacles probables</p>
+<p class="qh">Nommer l obstacle lui retire son pouvoir de surprise.</p>
+<div class="obs-grid">
+<div class="obs" onclick="this.classList.toggle('on')">Personne difficile</div>
+<div class="obs" onclick="this.classList.toggle('on')">Decision sous pression</div>
+<div class="obs" onclick="this.classList.toggle('on')">Critique</div>
+<div class="obs" onclick="this.classList.toggle('on')">Frustration</div>
+<div class="obs" onclick="this.classList.toggle('on')">Conflit</div>
+<div class="obs" onclick="this.classList.toggle('on')">Fatigue</div>
+</div>
+<textarea placeholder="Obstacle specifique..."></textarea>
+</div>
+<div class="qb">
+<p class="st">II - Ma reponse preparee</p>
+<textarea placeholder="Si cette situation se produit, je choisis de..."></textarea>
+</div>
+<div class="qb">
+<p class="st">III - Ce qui depend de moi</p>
+<textarea placeholder="Aujourd hui, ce qui depend de moi..."></textarea>
+</div>
+<div class="qb">
+<p class="st">Intention du jour</p>
+<textarea style="min-height:60px" placeholder="Aujourd hui, je veux etre... faire..."></textarea>
+</div>
+<p class="st">Mantra du jour</p>
+<div class="mantras">
+<div class="m" onclick="sel(this)"><p>Supporte et abstiens-toi.</p><small>Epictete</small></div>
+<div class="m" onclick="sel(this)"><p>L obstacle devient la voie.</p><small>Marc Aurele V</small></div>
+<div class="m" onclick="sel(this)"><p>Ce ne sont pas les choses qui troublent - c est l opinion.</p><small>Epictete V</small></div>
+<div class="m" onclick="sel(this)"><p>Garde ton guide interieur libre de toute passion.</p><small>Marc Aurele VII</small></div>
+</div>
+<button class="btn" onclick="sauv()">Sceller le rituel - entrer dans le jour</button>
+<div class="ok" id="ok"><p id="okt"></p></div>
+</main>
+<script>
+const J=["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+const M=["Janvier","Fevrier","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Decembre"];
+const n=new Date();
+document.getElementById("d").textContent=J[n.getDay()]+" "+n.getDate()+" "+M[n.getMonth()]+" "+n.getFullYear();
+function sel(el){document.querySelectorAll(".m").forEach(m=>m.classList.remove("on"));el.classList.add("on")}
+function sauv(){
+const a=JSON.parse(localStorage.getItem("hegemonikon_matin")||"[]");
+a.unshift({date:new Date().toISOString(),type:"matin"});
+localStorage.setItem("hegemonikon_matin",JSON.stringify(a));
+const msgs=["L ame est armee. Avance.","Rituel scelle. Va.","Tu es pret."];
+document.getElementById("okt").textContent=msgs[Math.floor(Math.random()*msgs.length)];
+const ok=document.getElementById("ok");
+ok.classList.add("v");setTimeout(()=>ok.classList.remove("v"),4000);
+}
+</script>
+</body>
+</html>

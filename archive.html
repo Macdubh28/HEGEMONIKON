@@ -1,1 +1,295 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Archive</title></head><body><script>window.location="index.html"</script></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HEGEMONIKON — Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --noir: #080808; --noir-card: #141414;
+    --bronze: #C9A84C; --bronze-dim: #8B6914; --bronze-pale: #e8d5a3;
+    --texte: #d4c9b0; --texte-dim: #7a7060; --texte-pale: #4a4438;
+    --or-ligne: rgba(201,168,76,0.2);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--noir); color: var(--texte); font-family: 'Cormorant Garamond', Georgia, serif; min-height: 100vh; }
+  body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,168,76,0.04) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+
+  header { position: relative; z-index: 1; padding: 48px 32px 32px; display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1px solid var(--or-ligne); }
+  .logo { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 600; letter-spacing: 0.35em; color: var(--bronze); }
+  .logo span { color: var(--texte-dim); font-weight: 400; }
+  nav { display: flex; gap: 32px; }
+  nav a { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.25em; color: var(--texte-dim); text-decoration: none; text-transform: uppercase; transition: color 0.3s; }
+  nav a:hover { color: var(--bronze); }
+  nav a.active { color: var(--bronze-pale); }
+
+  main { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; padding: 64px 32px 80px; }
+
+  .page-titre-bloc { margin-bottom: 48px; animation: fadeUp 0.8s ease both; }
+  .page-eyebrow { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--bronze-dim); text-transform: uppercase; margin-bottom: 12px; }
+  .page-titre { font-family: 'Cinzel', serif; font-size: clamp(24px, 4vw, 36px); font-weight: 400; color: var(--bronze-pale); letter-spacing: 0.1em; margin-bottom: 8px; }
+  .page-sous { font-style: italic; font-size: 15px; color: var(--texte-dim); }
+
+  /* FILTRES */
+  .filtres {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin-bottom: 40px;
+    animation: fadeUp 0.8s ease 0.1s both;
+  }
+  .filtre-btn {
+    font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.25em;
+    padding: 8px 16px; border: 1px solid var(--or-ligne);
+    background: transparent; color: var(--texte-dim);
+    cursor: pointer; text-transform: uppercase; transition: all 0.2s;
+  }
+  .filtre-btn:hover { border-color: var(--bronze-dim); color: var(--bronze); }
+  .filtre-btn.actif { border-color: var(--bronze); color: var(--bronze); background: rgba(201,168,76,0.05); }
+
+  /* LISTE ENTRÉES */
+  .entrees-liste { display: flex; flex-direction: column; gap: 2px; }
+
+  .entree-card {
+    background: var(--noir-card);
+    border: 1px solid var(--or-ligne);
+    overflow: hidden;
+    transition: border-color 0.3s;
+    animation: fadeUp 0.6s ease both;
+  }
+  .entree-card:hover { border-color: var(--bronze-dim); }
+
+  .entree-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px; cursor: pointer; gap: 16px;
+  }
+
+  .entree-meta { display: flex; align-items: baseline; gap: 16px; flex: 1; min-width: 0; }
+
+  .entree-date {
+    font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.2em;
+    color: var(--bronze); white-space: nowrap;
+  }
+
+  .entree-apercu {
+    font-style: italic; font-size: 14px; color: var(--texte-dim);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    flex: 1;
+  }
+
+  .entree-niveau {
+    font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.2em;
+    color: var(--bronze-dim); white-space: nowrap;
+  }
+
+  .entree-toggle {
+    font-size: 12px; color: var(--bronze-dim); transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+  .entree-card.ouvert .entree-toggle { transform: rotate(180deg); }
+
+  .entree-corps {
+    display: none;
+    padding: 0 24px 24px;
+    border-top: 1px solid var(--or-ligne);
+  }
+  .entree-card.ouvert .entree-corps { display: block; }
+
+  .corps-section { margin-top: 20px; }
+  .corps-label {
+    font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.3em;
+    color: var(--bronze-dim); text-transform: uppercase; margin-bottom: 8px;
+  }
+  .corps-texte {
+    font-style: italic; font-size: 16px; line-height: 1.7;
+    color: var(--texte-dim); white-space: pre-wrap;
+  }
+
+  .tags-affichage { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .tag-affiché {
+    font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.2em;
+    padding: 4px 10px; border: 1px solid var(--or-ligne);
+    color: var(--texte-pale); text-transform: uppercase;
+  }
+
+  .entree-suppr {
+    font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.2em;
+    color: var(--texte-pale); background: none; border: 1px solid var(--or-ligne);
+    padding: 6px 12px; cursor: pointer; text-transform: uppercase;
+    margin-top: 20px; transition: all 0.2s;
+  }
+  .entree-suppr:hover { border-color: #8B2020; color: #c06060; }
+
+  /* VIDE */
+  .vide-bloc {
+    text-align: center; padding: 80px 32px;
+    display: none;
+  }
+  .vide-bloc.visible { display: block; }
+  .vide-titre { font-family: 'Cinzel', serif; font-size: 18px; letter-spacing: 0.1em; color: var(--bronze-dim); margin-bottom: 12px; }
+  .vide-texte { font-style: italic; font-size: 16px; color: var(--texte-pale); }
+
+  /* EXPORT */
+  .export-barre {
+    display: flex; justify-content: flex-end; gap: 12px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.8s ease 0.15s both;
+  }
+  .btn-export {
+    font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.25em;
+    padding: 8px 16px; border: 1px solid var(--or-ligne);
+    background: transparent; color: var(--texte-dim);
+    cursor: pointer; text-transform: uppercase; transition: all 0.2s;
+  }
+  .btn-export:hover { border-color: var(--bronze-dim); color: var(--bronze); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 600px) { header { flex-direction: column; gap: 20px; } nav { gap: 16px; flex-wrap: wrap; } main { padding: 40px 16px 60px; } .entree-apercu { display: none; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">HEGEMONIKON <span>— le guide intérieur</span></div>
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="matin.html">Matin</a>
+    <a href="journal.html">Journal</a>
+    <a href="archive.html" class="active">Archive</a>
+    <a href="progres.html">Maîtrise</a>
+  </nav>
+</header>
+
+<main>
+  <div class="page-titre-bloc">
+    <p class="page-eyebrow">Mémoire du combat — toutes les entrées</p>
+    <h1 class="page-titre">Archive des Jours</h1>
+    <p class="page-sous" id="compte-entrees">Chargement...</p>
+  </div>
+
+  <div class="filtres">
+    <button class="filtre-btn actif" onclick="filtrer('tous', this)">Tous</button>
+    <button class="filtre-btn" onclick="filtrer('cette-semaine', this)">Cette semaine</button>
+    <button class="filtre-btn" onclick="filtrer('ce-mois', this)">Ce mois</button>
+    <button class="filtre-btn" onclick="filtrer('niveau-4', this)">Niveau IV</button>
+    <button class="filtre-btn" onclick="filtrer('niveau-3', this)">Niveau III</button>
+  </div>
+
+  <div class="export-barre">
+    <button class="btn-export" onclick="exporterJSON()">Exporter JSON</button>
+  </div>
+
+  <div class="entrees-liste" id="entrees-liste"></div>
+  <div class="vide-bloc" id="vide-bloc">
+    <p class="vide-titre">Aucune entrée</p>
+    <p class="vide-texte">Le premier pas forge la citadelle. Commence ce soir.</p>
+  </div>
+</main>
+
+<script>
+const NIVEAUX = { 1: 'I — Réactif', 2: 'II — Conscient', 3: 'III — Maître', 4: 'IV — Inébranlable' };
+let filtreCourant = 'tous';
+let toutesEntrees = [];
+
+function chargerEntrees() {
+  toutesEntrees = JSON.parse(localStorage.getItem('hegemonikon_entries') || '[]');
+  afficher(toutesEntrees);
+}
+
+function filtrer(type, btn) {
+  filtreCourant = type;
+  document.querySelectorAll('.filtre-btn').forEach(b => b.classList.remove('actif'));
+  btn.classList.add('actif');
+
+  const now = new Date();
+  let filtrees = toutesEntrees;
+
+  if (type === 'cette-semaine') {
+    const lundi = new Date(now); lundi.setDate(now.getDate() - now.getDay() + 1); lundi.setHours(0,0,0,0);
+    filtrees = toutesEntrees.filter(e => new Date(e.date) >= lundi);
+  } else if (type === 'ce-mois') {
+    filtrees = toutesEntrees.filter(e => {
+      const d = new Date(e.date);
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    });
+  } else if (type === 'niveau-4') {
+    filtrees = toutesEntrees.filter(e => e.niveau === 4);
+  } else if (type === 'niveau-3') {
+    filtrees = toutesEntrees.filter(e => e.niveau === 3);
+  }
+
+  afficher(filtrees);
+}
+
+function afficher(entrees) {
+  const liste = document.getElementById('entrees-liste');
+  const vide = document.getElementById('vide-bloc');
+  const compte = document.getElementById('compte-entrees');
+
+  liste.innerHTML = '';
+  compte.textContent = entrees.length + ' entrée' + (entrees.length !== 1 ? 's' : '');
+
+  if (entrees.length === 0) {
+    vide.classList.add('visible');
+    return;
+  }
+  vide.classList.remove('visible');
+
+  entrees.forEach((e, i) => {
+    const d = new Date(e.date);
+    const jours = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+    const mois = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+    const dateStr = jours[d.getDay()] + ' ' + d.getDate() + ' ' + mois[d.getMonth()] + ' ' + d.getFullYear();
+    const apercu = e.q1 || e.q2 || e.q3 || e.libre || '—';
+    const niveauStr = e.niveau ? NIVEAUX[e.niveau] : '—';
+
+    const card = document.createElement('div');
+    card.className = 'entree-card';
+    card.style.animationDelay = (i * 0.04) + 's';
+    card.innerHTML = `
+      <div class="entree-header" onclick="toggleCard(this.parentElement)">
+        <div class="entree-meta">
+          <span class="entree-date">${dateStr}</span>
+          <span class="entree-apercu">${apercu.substring(0, 80)}...</span>
+        </div>
+        <span class="entree-niveau">${niveauStr}</span>
+        <span class="entree-toggle">▼</span>
+      </div>
+      <div class="entree-corps">
+        ${e.q1 ? `<div class="corps-section"><p class="corps-label">I — Quel mal ai-je guéri ?</p><p class="corps-texte">${e.q1}</p></div>` : ''}
+        ${e.q2 ? `<div class="corps-section"><p class="corps-label">II — Vice résisté ou cédé ?</p><p class="corps-texte">${e.q2}</p></div>` : ''}
+        ${e.q3 ? `<div class="corps-section"><p class="corps-label">III — En quoi meilleur ?</p><p class="corps-texte">${e.q3}</p></div>` : ''}
+        ${e.libre ? `<div class="corps-section"><p class="corps-label">Espace libre</p><p class="corps-texte">${e.libre}</p></div>` : ''}
+        ${e.declencheurs && e.declencheurs.length ? `<div class="corps-section"><p class="corps-label">Déclencheurs</p><div class="tags-affichage">${e.declencheurs.map(t => `<span class="tag-affiché">${t}</span>`).join('')}</div></div>` : ''}
+        <button class="entree-suppr" onclick="supprimerEntree(${toutesEntrees.indexOf(e)})">Supprimer cette entrée</button>
+      </div>
+    `;
+    liste.appendChild(card);
+  });
+}
+
+function toggleCard(card) {
+  card.classList.toggle('ouvert');
+}
+
+function supprimerEntree(index) {
+  if (!confirm('Supprimer cette entrée définitivement ?')) return;
+  toutesEntrees.splice(index, 1);
+  localStorage.setItem('hegemonikon_entries', JSON.stringify(toutesEntrees));
+  afficher(toutesEntrees);
+}
+
+function exporterJSON() {
+  const data = JSON.stringify(toutesEntrees, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'hegemonikon-archive-' + new Date().toISOString().split('T')[0] + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+chargerEntrees();
+</script>
+</body>
+</html>
