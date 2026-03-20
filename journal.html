@@ -1,439 +1,879 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Journal Stoïcien — AURELIUS SECUNDUS</title>
+  <title>Journal du Soir — HEGEMONIKON</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --gold: #C9A84C;
       --gold-light: #E8C96A;
-      --dark: #0D0D0D;
-      --dark-mid: #151515;
-      --dark-light: #1E1E1E;
-      --dark-card: #242424;
+      --gold-dim: #8A6E30;
+      --dark: #080808;
+      --dark-mid: #111111;
+      --dark-card: #181818;
+      --dark-border: #2A2A2A;
       --text: #E8E0D0;
-      --text-muted: #9A8F80;
-      --blue-acc: #2B4A7A;
-      --navy: #0d1635;
-      --silver: #c8d0e0;
-      --border: rgba(200,208,224,0.12);
-      --input-bg: rgba(255,255,255,0.04);
+      --text-muted: #7A7060;
+      --text-dim: #4A4438;
+      --red: #8B2E2E;
+      --green: #2E5E3E;
     }
+
     * { margin:0; padding:0; box-sizing:border-box; }
-    body { background:var(--dark); color:var(--text); font-family:'Georgia',serif; display:flex; min-height:100vh; }
+    html { scroll-behavior: smooth; }
 
-    /* ── SIDEBAR ── */
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: 'Crimson Text', Georgia, serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* MOBILE TOGGLE */
+    .menu-toggle {
+      display: none;
+      position: fixed;
+      top: 16px; left: 16px;
+      z-index: 200;
+      background: var(--dark-card);
+      border: 1px solid var(--dark-border);
+      color: var(--gold);
+      width: 44px; height: 44px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* SIDEBAR */
     #sidebar {
-      width:260px; min-height:100vh; background:var(--dark-mid);
-      border-right:1px solid #2A2A2A; position:fixed; top:0; left:0;
-      display:flex; flex-direction:column; padding:0 0 30px 0; z-index:100;
+      width: 240px;
+      min-height: 100vh;
+      background: var(--dark-mid);
+      border-right: 1px solid var(--dark-border);
+      position: fixed;
+      top: 0; left: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 0 0 30px 0;
+      z-index: 100;
+      transition: transform 0.3s ease;
     }
-    #sidebar-logo { padding:28px 20px 20px; border-bottom:1px solid #2A2A2A; text-align:center; }
-    #sidebar-logo h1 { font-size:1.05rem; letter-spacing:3px; color:var(--gold); text-transform:uppercase; }
-    #sidebar-logo p { font-size:0.7rem; color:var(--text-muted); letter-spacing:1px; margin-top:4px; }
-    nav { flex:1; padding:20px 0; }
+
+    #sidebar-logo {
+      padding: 28px 20px 24px;
+      border-bottom: 1px solid var(--dark-border);
+      text-align: center;
+    }
+
+    #sidebar-logo .logo-symbol {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+      display: block;
+    }
+
+    #sidebar-logo .logo-sub {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-top: 4px;
+      display: block;
+    }
+
+    #sidebar-logo .logo-handle {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.55rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      margin-top: 6px;
+      display: block;
+    }
+
+    nav { padding: 20px 0; flex: 1; }
+
     nav a {
-      display:flex; align-items:center; gap:10px;
-      padding:12px 22px; color:var(--text-muted); text-decoration:none;
-      font-size:0.85rem; letter-spacing:1px; transition:all .2s;
-      border-left:3px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: all 0.2s;
+      border-left: 2px solid transparent;
     }
+
     nav a:hover, nav a.active {
-      color:var(--gold); background:rgba(201,168,76,.07);
-      border-left-color:var(--gold);
-    }
-    nav a .icon { font-size:1.1rem; width:22px; text-align:center; }
-    #sidebar-footer { padding:16px 20px; border-top:1px solid #2A2A2A; text-align:center; }
-    #sidebar-footer p { font-size:0.65rem; color:var(--text-muted); letter-spacing:1px; }
-
-    /* ── MAIN ── */
-    #main { margin-left:260px; flex:1; }
-
-    /* HERO */
-    .journal-hero {
-      background: linear-gradient(160deg, #0a0e1a 0%, #0d1635 50%, #0D0D0D 100%);
-      border-bottom:1px solid #2A2A2A;
-      padding:60px 60px 50px;
-      text-align:center;
-    }
-    .journal-hero .eagle { font-size:2.8rem; margin-bottom:14px; }
-    .journal-hero h2 { font-size:2rem; letter-spacing:4px; color:var(--gold); text-transform:uppercase; }
-    .journal-hero p { font-size:0.9rem; color:var(--text-muted); margin-top:10px; font-style:italic; letter-spacing:1px; }
-    .journal-hero .date-display { font-size:0.75rem; color:var(--gold); letter-spacing:3px; text-transform:uppercase; margin-top:12px; }
-    .divider { width:60px; height:1px; background:var(--gold); margin:16px auto; opacity:.5; }
-
-    /* ── JOURNAL CONTENT ── */
-    .journal-wrap { padding:50px 60px; }
-
-    /* TABS NAV */
-    .journal-tabs {
-      display:flex; gap:4px; margin-bottom:36px;
-      background:var(--dark-mid); border:1px solid #2A2A2A;
-      border-radius:4px; padding:4px; width:fit-content;
-    }
-    .jtab {
-      padding:10px 24px; font-size:0.78rem; letter-spacing:2px;
-      text-transform:uppercase; color:var(--text-muted);
-      background:none; border:none; cursor:pointer;
-      transition:all .2s; font-family:'Georgia',serif; border-radius:2px;
-    }
-    .jtab.active { background:var(--blue-acc); color:var(--gold); border:1px solid rgba(201,168,76,0.2); }
-
-    /* SECTIONS */
-    .jsection { display:none; }
-    .jsection.visible { display:block; }
-
-    /* FIELD */
-    .field-group { margin-bottom:28px; }
-    .field-label {
-      font-size:0.7rem; letter-spacing:3px; color:var(--gold);
-      text-transform:uppercase; margin-bottom:10px; display:block;
+      color: var(--gold);
+      border-left-color: var(--gold);
+      background: rgba(201,168,76,0.05);
     }
 
-    /* QUOTE BLOCK */
-    .quote-block {
-      background:var(--dark-card); border-left:3px solid var(--gold);
-      padding:18px 20px; border-radius:0 4px 4px 0; margin-bottom:12px;
+    .sidebar-footer {
+      padding: 20px;
+      border-top: 1px solid var(--dark-border);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.55rem;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: center;
     }
-    .quote-block .qtext { font-size:0.95rem; font-style:italic; color:var(--text); line-height:1.8; }
-    .quote-block .qauthor { font-size:0.7rem; letter-spacing:2px; color:var(--gold); margin-top:8px; text-transform:uppercase; }
 
-    textarea, input[type="text"] {
-      width:100%; background:var(--dark-card); border:1px solid #2E2E2E;
-      border-radius:4px; padding:14px 16px; color:var(--text);
-      font-size:0.9rem; font-family:'Georgia',serif; line-height:1.7;
-      resize:vertical; transition:border-color .2s; outline:none;
+    /* MAIN */
+    #main { margin-left: 240px; }
+
+    /* PAGE HEADER */
+    .page-header {
+      padding: 60px 60px 40px;
+      border-bottom: 1px solid var(--dark-border);
+      position: relative;
+      overflow: hidden;
     }
-    textarea:focus, input[type="text"]:focus { border-color:var(--gold); }
-    textarea { min-height:90px; }
 
-    /* DICHOTOMIE GRID */
-    .dichot-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-    .dichot-label { font-size:0.72rem; letter-spacing:1.5px; color:var(--text-muted); text-transform:uppercase; margin-bottom:8px; }
-
-    /* GRATITUDE */
-    .gratitude-list { display:flex; flex-direction:column; gap:10px; }
-
-    /* SAVE BTN */
-    .btn-save {
-      width:100%; padding:14px; margin-top:8px;
-      background:linear-gradient(135deg,#1a2a5e,#0d1635);
-      border:1px solid rgba(201,168,76,0.4); border-radius:4px;
-      color:var(--gold); font-size:0.75rem; letter-spacing:3px;
-      text-transform:uppercase; cursor:pointer; font-family:'Georgia',serif;
-      transition:all .2s;
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(201,168,76,0.04) 0%, transparent 70%);
+      pointer-events: none;
     }
-    .btn-save:hover { border-color:var(--gold); background:rgba(26,42,94,0.8); }
 
-    /* ENTRIES */
-    .entries-header {
-      display:flex; justify-content:space-between; align-items:center;
-      margin-bottom:24px;
+    .page-header-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.55rem;
+      letter-spacing: 0.35em;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+      margin-bottom: 12px;
     }
-    .entries-count { font-size:0.7rem; letter-spacing:2px; color:var(--text-muted); text-transform:uppercase; }
 
-    .entry-card {
-      background:var(--dark-card); border:1px solid #2E2E2E;
-      border-radius:4px; margin-bottom:16px; overflow:hidden;
-      transition:border-color .2s;
+    .page-header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 900;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
     }
-    .entry-card:hover { border-color:rgba(201,168,76,0.3); }
-    .entry-card-header {
-      padding:18px 22px; display:flex; justify-content:space-between;
-      align-items:center; cursor:pointer;
+
+    .page-header-sub {
+      font-family: 'Crimson Text', serif;
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--text-muted);
     }
-    .entry-card-date { font-size:0.7rem; letter-spacing:2px; color:var(--gold); text-transform:uppercase; }
-    .entry-card-preview { font-size:0.82rem; color:var(--text-muted); margin-top:4px; line-height:1.5; }
-    .entry-toggle { color:var(--gold); font-size:1.1rem; transition:transform .3s; flex-shrink:0; }
 
-    .entry-full { display:none; padding:0 22px 22px; border-top:1px solid #2A2A2A; }
-    .entry-full.open { display:block; }
-
-    .entry-section { margin-top:16px; }
-    .entry-section-title { font-size:0.65rem; letter-spacing:2px; color:var(--gold); text-transform:uppercase; margin-bottom:6px; }
-    .entry-section-text { font-size:0.85rem; color:var(--text); line-height:1.7; font-style:italic; }
-    .entry-dichot { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:6px; }
-    .entry-dichot-col { background:rgba(255,255,255,0.02); padding:10px 12px; border-left:2px solid rgba(201,168,76,0.3); }
-    .entry-dichot-label { font-size:0.6rem; letter-spacing:1.5px; color:var(--text-muted); text-transform:uppercase; margin-bottom:4px; }
-
-    /* EMPTY */
-    .empty-state { text-align:center; padding:60px 20px; color:var(--text-muted); }
-    .empty-state p { font-size:0.9rem; font-style:italic; line-height:1.8; }
-    .empty-state .empty-icon { font-size:2.5rem; margin-bottom:16px; }
-
-    /* TOAST */
-    .toast {
-      position:fixed; bottom:2rem; left:50%; transform:translateX(-50%);
-      background:var(--blue-acc); border:1px solid rgba(201,168,76,0.3);
-      border-radius:4px; padding:10px 24px;
-      font-size:0.75rem; letter-spacing:2px; color:var(--gold);
-      opacity:0; transition:opacity .3s; pointer-events:none;
-      text-transform:uppercase; z-index:999;
+    .page-header-date {
+      position: absolute;
+      top: 60px; right: 60px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      color: var(--gold-dim);
+      letter-spacing: 0.2em;
+      text-align: right;
     }
-    .toast.show { opacity:1; }
 
-    /* Responsive */
-    @media(max-width:768px){
-      #sidebar{ width:100%; min-height:auto; position:relative; }
-      #main{ margin-left:0; }
-      .journal-wrap{ padding:30px 20px; }
-      .journal-hero{ padding:40px 20px 30px; }
-      .dichot-grid{ grid-template-columns:1fr; }
+    /* FORM CONTAINER */
+    .form-container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 60px 60px 80px;
+    }
+
+    /* SENECA BLOCK */
+    .seneca-block {
+      background: rgba(201,168,76,0.04);
+      border-left: 2px solid var(--gold-dim);
+      padding: 24px 28px;
+      margin-bottom: 48px;
+    }
+
+    .seneca-intro {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.55rem;
+      letter-spacing: 0.25em;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .seneca-questions {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .seneca-questions li {
+      font-family: 'Crimson Text', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--text);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .seneca-questions li span.num {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      color: var(--gold);
+      min-width: 16px;
+      padding-top: 3px;
+    }
+
+    /* QUESTION BLOCK */
+    .question-block {
+      margin-bottom: 40px;
+    }
+
+    .question-label {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .question-num {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      color: var(--gold);
+      letter-spacing: 0.2em;
+      min-width: 24px;
+    }
+
+    .question-text {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: 0.08em;
+    }
+
+    .question-hint {
+      font-family: 'Crimson Text', serif;
+      font-size: 0.9rem;
+      font-style: italic;
+      color: var(--text-dim);
+      margin-left: 40px;
+      margin-bottom: 12px;
+    }
+
+    textarea, input[type="text"], input[type="range"] {
+      width: 100%;
+      background: var(--dark-card);
+      border: 1px solid var(--dark-border);
+      color: var(--text);
+      font-family: 'Crimson Text', Georgia, serif;
+      font-size: 1rem;
+      padding: 16px 20px;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+      line-height: 1.6;
+    }
+
+    textarea:focus, input[type="text"]:focus {
+      border-color: var(--gold-dim);
+    }
+
+    textarea::placeholder, input::placeholder {
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    /* MASTERY SLIDER */
+    .mastery-block {
+      margin-bottom: 40px;
+    }
+
+    .mastery-track {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .mastery-dot {
+      flex: 1;
+      height: 4px;
+      background: var(--dark-border);
+      cursor: pointer;
+      transition: background 0.2s;
+      border-radius: 2px;
+    }
+
+    .mastery-dot.active {
+      background: var(--gold);
+    }
+
+    .mastery-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+
+    .mastery-labels span {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.5rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* TRIGGERS */
+    .triggers-block { margin-bottom: 40px; }
+
+    .triggers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .trigger-chip {
+      background: var(--dark-card);
+      border: 1px solid var(--dark-border);
+      padding: 10px 14px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    .trigger-chip:hover {
+      border-color: var(--gold-dim);
+      color: var(--text);
+    }
+
+    .trigger-chip.selected {
+      background: rgba(201,168,76,0.1);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .trigger-custom {
+      margin-top: 10px;
+    }
+
+    /* DIVIDER */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 48px 0 40px;
+    }
+
+    .section-divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--dark-border);
+    }
+
+    .section-divider-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      color: var(--gold-dim);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+    }
+
+    /* SUBMIT */
+    .submit-zone {
+      margin-top: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-submit {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--dark);
+      background: var(--gold);
+      border: none;
+      padding: 18px 56px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 600;
+    }
+
+    .btn-submit:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(201,168,76,0.3);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .submit-hint {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.55rem;
+      color: var(--text-dim);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    /* SUCCESS MESSAGE */
+    .success-toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--dark-card);
+      border: 1px solid var(--gold-dim);
+      padding: 16px 32px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      transition: transform 0.4s ease;
+      z-index: 300;
+      white-space: nowrap;
+    }
+
+    .success-toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ENTRIES RECENT */
+    .recent-section {
+      border-top: 1px solid var(--dark-border);
+      padding: 48px 60px 60px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .recent-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .entry-item {
+      background: var(--dark-card);
+      border: 1px solid var(--dark-border);
+      padding: 20px 24px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .entry-item:hover {
+      border-color: var(--gold-dim);
+    }
+
+    .entry-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .entry-item-date {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      color: var(--gold-dim);
+      letter-spacing: 0.15em;
+    }
+
+    .entry-item-level {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.5rem;
+      color: var(--text-dim);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .entry-item-preview {
+      font-family: 'Crimson Text', serif;
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .menu-toggle { display: flex; }
+      #sidebar { transform: translateX(-100%); width: 280px; }
+      #sidebar.open { transform: translateX(0); }
+      #main { margin-left: 0; }
+      .page-header { padding: 70px 24px 32px; }
+      .page-header-date { position: static; margin-top: 16px; }
+      .form-container { padding: 40px 24px 60px; }
+      .recent-section { padding: 40px 24px; }
+      .triggers-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 99;
+    }
+    .sidebar-overlay.active { display: block; }
+
+    /* Already saved today indicator */
+    .already-saved {
+      background: rgba(46,94,62,0.15);
+      border: 1px solid rgba(46,94,62,0.4);
+      padding: 12px 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      color: #6BAE88;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: none;
+    }
+
+    .char-count {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.5rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-align: right;
+      margin-top: 6px;
     }
   </style>
 </head>
 <body>
 
-<!-- ══ SIDEBAR ══ -->
+<button class="menu-toggle" id="menuToggle">☰</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="success-toast" id="successToast">✦ Entrée sauvegardée</div>
+
+<!-- SIDEBAR -->
 <aside id="sidebar">
   <div id="sidebar-logo">
-    <h1>⚖ AURELIUS SECUNDUS</h1>
-    <p>@AigleRoyal28</p>
+    <span class="logo-symbol">HEGEMONIKON</span>
+    <span class="logo-sub">Journal Stoïcien</span>
+    <span class="logo-handle">@AigleRoyal28</span>
   </div>
   <nav>
-    <a href="index.html#citations"><span class="icon">🏛</span> Citations du Jour</a>
-    <a href="index.html#fondements"><span class="icon">📜</span> Les 12 Fondements</a>
-    <a href="index.html#textes"><span class="icon">📚</span> Textes Philosophiques</a>
-    <a href="index.html#exercices"><span class="icon">⚔</span> Exercices Stoïciens</a>
-    <a href="index.html#glossaire"><span class="icon">🗝</span> Glossaire</a>
-    <a href="index.html#algorithme"><span class="icon">🔄</span> Algorithme de Vie</a>
-    <a href="index.html#philosophes"><span class="icon">🦅</span> Les Philosophes</a>
-    <a href="index.html#morale-ghost"><span class="icon">🦅</span> Morale de Ghost</a>
-    <a href="meditation_memento_mori.html"><span class="icon">💀</span> Méditation — Memento Mori</a>
-    <a href="journal.html" class="active"><span class="icon">📓</span> Journal Stoïcien</a>
+    <a href="index.html">⚖ Tableau de Bord</a>
+    <a href="matin.html">☀ Rituel du Matin</a>
+    <a href="journal.html" class="active">📖 Journal du Soir</a>
+    <a href="archive.html">🗄 Archive</a>
+    <a href="progres.html">⚡ Progression</a>
   </nav>
-  <div id="sidebar-footer">
-    <p>LA PHILOSOPHIE STOÏCIENNE<br>AU SERVICE DE LA VIE MODERNE</p>
-  </div>
+  <div class="sidebar-footer">La faculté directrice de l'âme</div>
 </aside>
 
-<!-- ══ MAIN ══ -->
+<!-- MAIN -->
 <main id="main">
 
-  <div class="journal-hero">
-    <div class="eagle">📓</div>
-    <h2>Journal Stoïcien</h2>
-    <p>Marc Aurèle écrivait ses Méditations pour lui-même. Toi aussi.</p>
-    <div class="divider"></div>
-    <div class="date-display" id="date-display"></div>
+  <!-- HEADER -->
+  <div class="page-header">
+    <p class="page-header-label">Rituel nocturne · Examen de conscience</p>
+    <h1>EXAMEN DU SOIR</h1>
+    <p class="page-header-sub">« Examine chaque soir : Qu'ai-je mal fait ? Qu'ai-je accompli ? Qu'ai-je omis ? »</p>
+    <div class="page-header-date" id="headerDate"></div>
   </div>
 
-  <div class="journal-wrap">
+  <!-- FORM -->
+  <div class="form-container">
 
-    <div class="journal-tabs">
-      <button class="jtab active" onclick="switchTab('ecrire', this)">✍ Écrire</button>
-      <button class="jtab" onclick="switchTab('entrees', this)">📖 Mes Entrées</button>
+    <div class="already-saved" id="alreadySaved">
+      ✦ Tu as déjà écrit aujourd'hui — une nouvelle entrée sera ajoutée
     </div>
 
-    <!-- ══ TAB ÉCRIRE ══ -->
-    <div class="jsection visible" id="tab-ecrire">
-
-      <div class="field-group">
-        <span class="field-label">⬧ Citation du Jour</span>
-        <div class="quote-block">
-          <div class="qtext" id="quote-text"></div>
-          <div class="qauthor" id="quote-author"></div>
-        </div>
-        <span class="field-label" style="margin-top:16px;">Mon commentaire sur cette citation</span>
-        <textarea id="commentaire" placeholder="Ce que cette citation éveille en moi aujourd'hui... Qu'est-ce qu'elle m'enseigne ? Comment puis-je l'appliquer ?" rows="4"></textarea>
-      </div>
-
-      <div class="field-group">
-        <span class="field-label">⬧ Gratitude Stoïcienne</span>
-        <div class="gratitude-list">
-          <input type="text" id="gratitude1" placeholder="Je suis reconnaissant pour..." />
-          <input type="text" id="gratitude2" placeholder="Une personne qui m'a fortifié ou inspiré..." />
-          <input type="text" id="gratitude3" placeholder="Une épreuve qui m'a fait grandir..." />
-        </div>
-      </div>
-
-      <div class="field-group">
-        <span class="field-label">⬧ Dichotomie du Contrôle</span>
-        <div class="dichot-grid">
-          <div>
-            <div class="dichot-label">Ce qui dépendait de moi</div>
-            <textarea id="controle" placeholder="Mes actions, mes pensées, mes réponses, mes efforts..." rows="5"></textarea>
-          </div>
-          <div>
-            <div class="dichot-label">Hors de mon contrôle — accepté</div>
-            <textarea id="non-controle" placeholder="Ce que j'ai lâché, ce que j'ai accepté sans résistance..." rows="5"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <div class="field-group">
-        <span class="field-label">⬧ Réflexion Libre</span>
-        <textarea id="reflexion" placeholder="La pensée du Ghost aujourd'hui. L'Aigle observe depuis les hauteurs, Macdubh forge dans l'adversité, le Stoïcien accepte et agit..." rows="7"></textarea>
-      </div>
-
-      <button class="btn-save" onclick="saveEntry()">⬧ Graver cette entrée dans la pierre ⬧</button>
-
+    <!-- SÉNÈQUE BLOCK -->
+    <div class="seneca-block">
+      <p class="seneca-intro">Les trois questions de Sénèque · De Ira, III</p>
+      <ul class="seneca-questions">
+        <li><span class="num">I</span> En quoi ai-je été mauvais aujourd'hui ?</li>
+        <li><span class="num">II</span> En quoi ai-je été fort ?</li>
+        <li><span class="num">III</span> Qu'ai-je laissé passer que j'aurais pu saisir ?</li>
+      </ul>
     </div>
 
-    <!-- ══ TAB ENTRÉES ══ -->
-    <div class="jsection" id="tab-entrees">
-      <div class="entries-header">
-        <span class="field-label" style="margin:0;">⬧ Mes Entrées</span>
-        <span class="entries-count" id="entries-count"></span>
+    <!-- Q1 -->
+    <div class="question-block">
+      <div class="question-label">
+        <span class="question-num">I</span>
+        <span class="question-text">En quoi ai-je été mauvais ?</span>
       </div>
-      <div id="entries-list"></div>
+      <p class="question-hint">Erreurs, réactions excessives, manquements à tes valeurs.</p>
+      <textarea id="q1" rows="4" placeholder="Sois sans complaisance ni violence — observe simplement."></textarea>
+      <div class="char-count" id="q1count">0 / 500</div>
     </div>
 
+    <!-- Q2 -->
+    <div class="question-block">
+      <div class="question-label">
+        <span class="question-num">II</span>
+        <span class="question-text">En quoi ai-je été fort ?</span>
+      </div>
+      <p class="question-hint">Vertus exercées, contrôle de soi, actions justes.</p>
+      <textarea id="q2" rows="4" placeholder="Reconnais ce qui mérite d'être reconnu — sans vanité."></textarea>
+      <div class="char-count" id="q2count">0 / 500</div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question-block">
+      <div class="question-label">
+        <span class="question-num">III</span>
+        <span class="question-text">Qu'ai-je laissé passer ?</span>
+      </div>
+      <p class="question-hint">Occasions manquées, prudence non exercée, parole retenue.</p>
+      <textarea id="q3" rows="4" placeholder="L'omission est aussi une action. Qu'as-tu évité ?"></textarea>
+      <div class="char-count" id="q3count">0 / 500</div>
+    </div>
+
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <span class="section-divider-label">Introspection</span>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <!-- INTENTION DU LENDEMAIN -->
+    <div class="question-block">
+      <div class="question-label">
+        <span class="question-num">IV</span>
+        <span class="question-text">Intention pour demain</span>
+      </div>
+      <p class="question-hint">Une seule chose. Concrète. Stoïcienne.</p>
+      <textarea id="q4" rows="3" placeholder="Demain, je choisis de..."></textarea>
+    </div>
+
+    <!-- NIVEAU DE MAÎTRISE -->
+    <div class="mastery-block question-block">
+      <div class="question-label">
+        <span class="question-num">V</span>
+        <span class="question-text">Niveau de maîtrise aujourd'hui</span>
+      </div>
+      <p class="question-hint">Pas un jugement — une observation honnête.</p>
+      <div class="mastery-track" id="masteryTrack">
+        <div class="mastery-dot" data-val="1"></div>
+        <div class="mastery-dot" data-val="2"></div>
+        <div class="mastery-dot" data-val="3"></div>
+        <div class="mastery-dot" data-val="4"></div>
+        <div class="mastery-dot" data-val="5"></div>
+        <div class="mastery-dot" data-val="6"></div>
+        <div class="mastery-dot" data-val="7"></div>
+        <div class="mastery-dot" data-val="8"></div>
+        <div class="mastery-dot" data-val="9"></div>
+        <div class="mastery-dot" data-val="10"></div>
+      </div>
+      <div class="mastery-labels">
+        <span>Perturbé</span>
+        <span id="masteryValue" style="color:var(--gold);">— / 10</span>
+        <span>Imperturbable</span>
+      </div>
+    </div>
+
+    <!-- DÉCLENCHEURS -->
+    <div class="triggers-block question-block">
+      <div class="question-label">
+        <span class="question-num">VI</span>
+        <span class="question-text">Déclencheurs identifiés</span>
+      </div>
+      <p class="question-hint">Ce qui a perturbé ton hégémonikon aujourd'hui.</p>
+      <div class="triggers-grid">
+        <div class="trigger-chip" data-trigger="Colère">Colère</div>
+        <div class="trigger-chip" data-trigger="Anxiété">Anxiété</div>
+        <div class="trigger-chip" data-trigger="Impatience">Impatience</div>
+        <div class="trigger-chip" data-trigger="Orgueil">Orgueil</div>
+        <div class="trigger-chip" data-trigger="Distraction">Distraction</div>
+        <div class="trigger-chip" data-trigger="Découragement">Découragement</div>
+        <div class="trigger-chip" data-trigger="Envie">Envie</div>
+        <div class="trigger-chip" data-trigger="Peur">Peur</div>
+        <div class="trigger-chip" data-trigger="Procrastination">Procrastination</div>
+        <div class="trigger-chip" data-trigger="Aucun">Aucun</div>
+      </div>
+      <div class="trigger-custom" style="margin-top:12px;">
+        <input type="text" id="triggerCustom" placeholder="Autre déclencheur..." style="height:44px; resize:none;">
+      </div>
+    </div>
+
+    <!-- CITATION DU JOUR RETENUE -->
+    <div class="question-block">
+      <div class="question-label">
+        <span class="question-num">VII</span>
+        <span class="question-text">Sagesse retenue</span>
+      </div>
+      <p class="question-hint">Une citation, une idée, une leçon du jour.</p>
+      <textarea id="q5" rows="2" placeholder="Ce que je garde avec moi cette nuit..."></textarea>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-zone">
+      <button class="btn-submit" id="submitBtn" onclick="saveEntry()">
+        Sceller l'entrée
+      </button>
+      <p class="submit-hint">Sauvegardé localement · Exportable depuis l'Archive</p>
+    </div>
   </div>
+
+  <!-- ENTRÉES RÉCENTES -->
+  <div class="recent-section" id="recentSection">
+    <p class="recent-title">✦ Entrées Récentes</p>
+    <div id="recentList"></div>
+  </div>
+
 </main>
 
-<div class="toast" id="toast"></div>
-
 <script>
-const QUOTES = [
-  { text: "Tu as pouvoir sur ton esprit, non sur les événements extérieurs. Réalise cela et tu trouveras la force.", author: "Marc Aurèle — Méditations" },
-  { text: "Il n'est pas dans la nature de l'homme d'avoir peur de la mort : c'est l'ignorance qui engendre cette crainte.", author: "Épictète — Entretiens" },
-  { text: "Ce n'est pas que les choses soient difficiles qui nous empêche d'oser ; c'est parce que nous n'osons pas qu'elles sont difficiles.", author: "Sénèque — Lettres à Lucilius" },
-  { text: "La perte n'est rien d'autre que le changement, et le changement est la joie de la Nature.", author: "Marc Aurèle — Méditations" },
-  { text: "Commence à vivre, et compte chaque jour comme une vie à part entière.", author: "Sénèque — Lettres à Lucilius" },
-  { text: "L'homme libre ne doit apprendre que les choses dignes d'un homme libre.", author: "Épictète — Entretiens" },
-  { text: "Nulle part l'homme ne peut trouver un asile plus calme que son propre âme.", author: "Marc Aurèle — Méditations" },
-  { text: "La vie est longue si tu sais t'en servir.", author: "Sénèque — De Brevitate Vitae" },
-  { text: "Si tu es blessé par les choses extérieures, ce n'est pas elles qui te font mal, mais ton propre jugement.", author: "Marc Aurèle — Méditations" },
-  { text: "Ne cherche pas à ce que les événements arrivent comme tu le veux ; désire que les événements soient comme ils sont, et tu seras en paix.", author: "Épictète — Manuel" },
-  { text: "Ce ne sont pas les choses qui troublent les hommes, mais les jugements qu'ils portent sur les choses.", author: "Épictète — Manuel" },
-  { text: "Tout est étranger à nous — le temps seul est nôtre.", author: "Sénèque — Lettres à Lucilius" },
-  { text: "Rappelle-toi depuis combien de temps tu remets tout à plus tard.", author: "Marc Aurèle — Méditations II, 4" },
-  { text: "Recede in te ipse quantum potes — Retire-toi en toi-même autant que tu le peux.", author: "Sénèque — Lettre VII" },
-  { text: "La vertu suffit au bonheur.", author: "Marc Aurèle — Méditations" },
-  { text: "Agis toujours en accord avec le logos — c'est-à-dire avec la raison.", author: "Marc Aurèle — Méditations" },
-  { text: "Fais chaque acte de ta vie comme si c'était le dernier.", author: "Marc Aurèle — Méditations" },
-  { text: "Ce qui blesse n'est pas ce qui arrive, mais l'idée que tu t'en fais.", author: "Épictète — Manuel" },
-  { text: "Pendant que tu remets à demain, la vie passe.", author: "Sénèque — De Brevitate Vitae" },
-  { text: "La citadelle intérieure que nul ne peut prendre — retire-toi en elle.", author: "Marc Aurèle — Méditations IV, 3" },
-  { text: "Supporte et abstiens-toi.", author: "Épictète — Entretiens" },
-  { text: "Le sage n'est jamais moins seul que lorsqu'il est seul.", author: "Cicéron — De Officiis" },
-  { text: "Ne gaspille pas ce qui te reste de vie à penser aux autres — regarde en toi.", author: "Marc Aurèle — Méditations" },
-  { text: "La résistance aux tentations est la mesure du caractère.", author: "Marc Aurèle — Méditations" },
-  { text: "Commence à être maintenant ce que tu veux être à l'avenir.", author: "Sénèque — Lettres à Lucilius" },
-  { text: "Quand tu cesseras d'espérer, tu cesseras de craindre.", author: "Sénèque — Lettres à Lucilius" },
-  { text: "La meilleure vengeance est de ne pas leur ressembler.", author: "Marc Aurèle — Méditations" },
-  { text: "Ce qui ne me tue pas me rend plus fort.", author: "Épictète — Entretiens" },
-  { text: "Celui qui est partout n'est nulle part.", author: "Sénèque — Lettres à Lucilius" },
-  { text: "L'obstacle est le chemin. Marche.", author: "Marc Aurèle — Méditations" },
-  { text: "Chaque jour est une vie entière en miniature.", author: "Sénèque — Lettres à Lucilius" }
-];
+// MOBILE MENU
+const menuToggle = document.getElementById('menuToggle');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('sidebarOverlay');
+menuToggle.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('active'); });
+overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('active'); });
 
-const MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-const DAYS = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+// DATE
+const now = new Date();
+const dateStr = now.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+document.getElementById('headerDate').innerHTML = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
 
-function getToday() {
-  const d = new Date();
-  return `${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
-}
+// CHECK IF ALREADY SAVED TODAY
+const todayKey = now.toISOString().split('T')[0];
+const entries = JSON.parse(localStorage.getItem('hegemonikon_entries') || '[]');
+const todayEntry = entries.find(e => (e.date || e.timestamp?.split('T')[0]) === todayKey);
+if (todayEntry) document.getElementById('alreadySaved').style.display = 'block';
 
-function getTodayKey() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
+// CHAR COUNTERS
+['q1','q2','q3'].forEach(id => {
+  const el = document.getElementById(id);
+  const counter = document.getElementById(id + 'count');
+  el.addEventListener('input', () => {
+    const len = el.value.length;
+    counter.textContent = len + ' / 500';
+    counter.style.color = len > 450 ? 'var(--gold)' : 'var(--text-dim)';
+  });
+});
 
-function getDailyQuote() {
-  const d = new Date();
-  const idx = (d.getDate() + d.getMonth() * 31) % QUOTES.length;
-  return QUOTES[idx];
-}
+// MASTERY DOTS
+let masteryValue = 0;
+const dots = document.querySelectorAll('.mastery-dot');
+dots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    masteryValue = parseInt(dot.dataset.val);
+    dots.forEach(d => d.classList.toggle('active', parseInt(d.dataset.val) <= masteryValue));
+    document.getElementById('masteryValue').textContent = masteryValue + ' / 10';
+  });
+});
 
-function init() {
-  document.getElementById('date-display').textContent = getToday();
-  const q = getDailyQuote();
-  document.getElementById('quote-text').textContent = '« ' + q.text + ' »';
-  document.getElementById('quote-author').textContent = '— ' + q.author;
-}
+// TRIGGERS
+const selectedTriggers = new Set();
+document.querySelectorAll('.trigger-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const t = chip.dataset.trigger;
+    if (selectedTriggers.has(t)) { selectedTriggers.delete(t); chip.classList.remove('selected'); }
+    else { selectedTriggers.add(t); chip.classList.add('selected'); }
+  });
+});
 
-function switchTab(tab, btn) {
-  document.querySelectorAll('.jtab').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.jsection').forEach(s => s.classList.remove('visible'));
-  btn.classList.add('active');
-  document.getElementById('tab-' + tab).classList.add('visible');
-  if (tab === 'entrees') renderEntries();
-}
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2400);
-}
-
+// SAVE ENTRY
 function saveEntry() {
-  const key = getTodayKey();
-  const q = getDailyQuote();
-  const entry = {
-    date: getToday(),
-    key,
-    quote: q,
-    commentaire: document.getElementById('commentaire').value.trim(),
-    gratitude: [
-      document.getElementById('gratitude1').value.trim(),
-      document.getElementById('gratitude2').value.trim(),
-      document.getElementById('gratitude3').value.trim()
-    ].filter(Boolean),
-    controle: document.getElementById('controle').value.trim(),
-    nonControle: document.getElementById('non-controle').value.trim(),
-    reflexion: document.getElementById('reflexion').value.trim()
-  };
+  const q1 = document.getElementById('q1').value.trim();
+  const q2 = document.getElementById('q2').value.trim();
+  const q3 = document.getElementById('q3').value.trim();
 
-  const hasContent = entry.commentaire || entry.gratitude.length || entry.controle || entry.nonControle || entry.reflexion;
-  if (!hasContent) { showToast('Écris quelque chose avant de graver'); return; }
-
-  let entries = [];
-  try { entries = JSON.parse(localStorage.getItem('as_journal_v2') || '[]'); } catch(e) {}
-  const idx = entries.findIndex(e => e.key === key);
-  if (idx >= 0) entries[idx] = entry;
-  else entries.unshift(entry);
-  localStorage.setItem('as_journal_v2', JSON.stringify(entries));
-  showToast('⬧ Entrée gravée dans la pierre ⬧');
-}
-
-function renderEntries() {
-  let entries = [];
-  try { entries = JSON.parse(localStorage.getItem('as_journal_v2') || '[]'); } catch(e) {}
-  const el = document.getElementById('entries-list');
-  const countEl = document.getElementById('entries-count');
-  countEl.textContent = entries.length + ' entrée' + (entries.length > 1 ? 's' : '');
-
-  if (!entries.length) {
-    el.innerHTML = `<div class="empty-state">
-      <div class="empty-icon">📓</div>
-      <p>Aucune entrée encore.<br>Marc Aurèle a écrit ses Méditations chaque jour.<br>Commence aujourd'hui.</p>
-    </div>`;
+  if (!q1 && !q2 && !q3) {
+    document.getElementById('q1').focus();
+    document.getElementById('q1').style.borderColor = 'var(--gold)';
+    setTimeout(() => document.getElementById('q1').style.borderColor = '', 2000);
     return;
   }
 
-  el.innerHTML = entries.map((e, i) => `
-    <div class="entry-card">
-      <div class="entry-card-header" onclick="toggleEntry(${i})">
-        <div>
-          <div class="entry-card-date">${e.date}</div>
-          <div class="entry-card-preview">${e.reflexion ? e.reflexion.substring(0,100)+'…' : e.commentaire ? e.commentaire.substring(0,100)+'…' : 'Entrée complète'}</div>
+  const customTrigger = document.getElementById('triggerCustom').value.trim();
+  const triggers = [...selectedTriggers];
+  if (customTrigger) triggers.push(customTrigger);
+
+  const entry = {
+    id: Date.now(),
+    date: todayKey,
+    timestamp: new Date().toISOString(),
+    q1, q2, q3,
+    intention: document.getElementById('q4').value.trim(),
+    mastery: masteryValue,
+    triggers,
+    wisdom: document.getElementById('q5').value.trim(),
+  };
+
+  const all = JSON.parse(localStorage.getItem('hegemonikon_entries') || '[]');
+  all.unshift(entry);
+  localStorage.setItem('hegemonikon_entries', JSON.stringify(all));
+
+  // Toast
+  const toast = document.getElementById('successToast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+
+  // Clear form
+  ['q1','q2','q3','q4','q5'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('triggerCustom').value = '';
+  selectedTriggers.clear();
+  document.querySelectorAll('.trigger-chip').forEach(c => c.classList.remove('selected'));
+  dots.forEach(d => d.classList.remove('active'));
+  masteryValue = 0;
+  document.getElementById('masteryValue').textContent = '— / 10';
+  document.getElementById('alreadySaved').style.display = 'block';
+
+  renderRecent();
+}
+
+// RENDER RECENT
+function renderRecent() {
+  const all = JSON.parse(localStorage.getItem('hegemonikon_entries') || '[]');
+  const list = document.getElementById('recentList');
+
+  if (!all.length) {
+    list.innerHTML = '<p style="font-family:\'Crimson Text\',serif;font-style:italic;color:var(--text-dim);font-size:0.95rem;">Aucune entrée encore. Le premier pas est le plus difficile.</p>';
+    return;
+  }
+
+  list.innerHTML = all.slice(0, 5).map(e => {
+    const d = new Date(e.timestamp || e.date);
+    const dateLabel = d.toLocaleDateString('fr-FR', { weekday:'short', day:'numeric', month:'short' });
+    const preview = e.q1 || e.q2 || e.q3 || '—';
+    return `
+      <div class="entry-item">
+        <div class="entry-item-header">
+          <span class="entry-item-date">${dateLabel.charAt(0).toUpperCase() + dateLabel.slice(1)}</span>
+          <span class="entry-item-level">${e.mastery ? 'Maîtrise ' + e.mastery + '/10' : ''}</span>
         </div>
-        <span class="entry-toggle" id="etoggle-${i}">▼</span>
+        <div class="entry-item-preview">${preview}</div>
       </div>
-      <div class="entry-full" id="efull-${i}">
-        ${e.quote ? `<div class="entry-section"><div class="entry-section-title">Citation du jour</div><div class="entry-section-text">« ${e.quote.text} » — ${e.quote.author}</div></div>` : ''}
-        ${e.commentaire ? `<div class="entry-section"><div class="entry-section-title">Commentaire</div><div class="entry-section-text">${e.commentaire}</div></div>` : ''}
-        ${e.gratitude && e.gratitude.length ? `<div class="entry-section"><div class="entry-section-title">Gratitude stoïcienne</div><div class="entry-section-text">${e.gratitude.map(g=>'• '+g).join('<br>')}</div></div>` : ''}
-        ${(e.controle || e.nonControle) ? `<div class="entry-section"><div class="entry-section-title">Dichotomie du contrôle</div><div class="entry-dichot">${e.controle ? `<div class="entry-dichot-col"><div class="entry-dichot-label">Ce qui dépendait de moi</div><div class="entry-section-text">${e.controle}</div></div>` : ''}${e.nonControle ? `<div class="entry-dichot-col"><div class="entry-dichot-label">Accepté & lâché</div><div class="entry-section-text">${e.nonControle}</div></div>` : ''}</div></div>` : ''}
-        ${e.reflexion ? `<div class="entry-section"><div class="entry-section-title">Réflexion libre</div><div class="entry-section-text">${e.reflexion}</div></div>` : ''}
-      </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 
-function toggleEntry(i) {
-  const full = document.getElementById('efull-' + i);
-  const toggle = document.getElementById('etoggle-' + i);
-  full.classList.toggle('open');
-  toggle.style.transform = full.classList.contains('open') ? 'rotate(180deg)' : '';
-}
-
-init();
+renderRecent();
 </script>
 </body>
 </html>

@@ -1,121 +1,565 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HEGEMONIKON - Matin</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
-<style>
-:root{--noir:#080808;--noir-card:#141414;--bronze:#C9A84C;--bronze-dim:#8B6914;--bronze-pale:#e8d5a3;--texte:#d4c9b0;--texte-dim:#7a7060;--texte-pale:#4a4438;--or-ligne:rgba(201,168,76,0.2)}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--noir);color:var(--texte);font-family:'Cormorant Garamond',Georgia,serif;min-height:100vh}
-header{padding:40px 32px 28px;display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--or-ligne)}
-.logo{font-family:'Cinzel',serif;font-size:13px;font-weight:600;letter-spacing:.35em;color:var(--bronze)}
-.logo span{color:var(--texte-dim);font-weight:400}
-nav{display:flex;gap:28px}
-nav a{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.25em;color:var(--texte-dim);text-decoration:none;text-transform:uppercase;transition:color .3s}
-nav a:hover{color:var(--bronze)}
-nav a.active{color:var(--bronze-pale)}
-main{max-width:720px;margin:0 auto;padding:56px 32px 80px}
-.eyebrow{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.4em;color:var(--bronze-dim);text-transform:uppercase;margin-bottom:10px}
-h1{font-family:'Cinzel',serif;font-size:clamp(22px,4vw,34px);font-weight:400;color:var(--bronze-pale);letter-spacing:.1em;margin-bottom:8px}
-.date{font-style:italic;font-size:15px;color:var(--texte-dim);margin-bottom:48px}
-.citation{padding:24px 28px;border:1px solid var(--or-ligne);background:var(--noir-card);margin-bottom:40px}
-.citation p{font-style:italic;font-size:18px;line-height:1.7;color:var(--texte-dim);margin-bottom:10px}
-.citation span{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.2em;color:var(--bronze)}
-.st{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.35em;color:var(--bronze-dim);text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--or-ligne)}
-.qb{margin-bottom:32px}
-.qh{font-size:13px;color:var(--texte-pale);font-style:italic;margin-bottom:10px}
-textarea{width:100%;min-height:90px;background:var(--noir-card);border:1px solid var(--or-ligne);color:var(--texte);font-family:'Cormorant Garamond',serif;font-size:17px;line-height:1.7;padding:16px 20px;resize:vertical;outline:none;transition:border-color .3s}
-textarea:focus{border-color:var(--bronze-dim)}
-textarea::placeholder{color:var(--texte-pale);font-style:italic}
-.obs-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
-.obs{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.15em;padding:8px 12px;border:1px solid var(--or-ligne);color:var(--texte-dim);cursor:pointer;transition:all .2s;text-transform:uppercase}
-.obs:hover{border-color:var(--bronze-dim);color:var(--bronze)}
-.obs.on{border-color:var(--bronze);color:var(--bronze);background:rgba(201,168,76,.05)}
-.mantras{display:flex;flex-direction:column;gap:6px;margin-bottom:32px}
-.m{padding:14px 18px;border:1px solid var(--or-ligne);background:var(--noir-card);cursor:pointer;transition:all .3s}
-.m:hover{border-color:var(--bronze-dim)}
-.m.on{border-color:var(--bronze)}
-.m p{font-style:italic;font-size:16px;color:var(--texte-dim);line-height:1.6;transition:color .3s}
-.m.on p{color:var(--texte)}
-.m small{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.2em;color:var(--bronze-dim)}
-.btn{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.3em;padding:15px 36px;background:var(--bronze-dim);color:var(--noir);border:none;cursor:pointer;text-transform:uppercase;transition:all .3s;width:100%}
-.btn:hover{background:var(--bronze)}
-.ok{display:none;padding:16px 20px;border:1px solid rgba(42,92,63,.4);background:rgba(42,92,63,.08);margin-top:16px}
-.ok.v{display:block}
-.ok p{font-style:italic;font-size:17px;color:#5a9a7a}
-hr{border:none;border-top:1px solid var(--or-ligne);margin:32px 0}
-</style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rituel du Matin — HEGEMONIKON</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C96A;
+      --gold-dim: #8A6E30;
+      --dark: #080808;
+      --dark-mid: #111111;
+      --dark-card: #181818;
+      --dark-border: #2A2A2A;
+      --text: #E8E0D0;
+      --text-muted: #7A7060;
+      --text-dim: #4A4438;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body { background:var(--dark); color:var(--text); font-family:'Crimson Text',Georgia,serif; min-height:100vh; overflow-x:hidden; }
+
+    .menu-toggle { display:none; position:fixed; top:16px; left:16px; z-index:200; background:var(--dark-card); border:1px solid var(--dark-border); color:var(--gold); width:44px; height:44px; border-radius:4px; cursor:pointer; font-size:1.2rem; align-items:center; justify-content:center; }
+
+    #sidebar { width:240px; min-height:100vh; background:var(--dark-mid); border-right:1px solid var(--dark-border); position:fixed; top:0; left:0; display:flex; flex-direction:column; padding:0 0 30px 0; z-index:100; transition:transform 0.3s ease; }
+    #sidebar-logo { padding:28px 20px 24px; border-bottom:1px solid var(--dark-border); text-align:center; }
+    #sidebar-logo .logo-symbol { font-family:'Cinzel',serif; font-size:1.1rem; font-weight:900; color:var(--gold); letter-spacing:0.15em; display:block; }
+    #sidebar-logo .logo-sub { font-family:'Montserrat',sans-serif; font-size:0.6rem; color:var(--text-muted); letter-spacing:0.25em; text-transform:uppercase; margin-top:4px; display:block; }
+    #sidebar-logo .logo-handle { font-family:'Montserrat',sans-serif; font-size:0.55rem; color:var(--text-dim); letter-spacing:0.1em; margin-top:6px; display:block; }
+    nav { padding:20px 0; flex:1; }
+    nav a { display:flex; align-items:center; gap:10px; padding:10px 20px; color:var(--text-muted); text-decoration:none; font-family:'Montserrat',sans-serif; font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; transition:all 0.2s; border-left:2px solid transparent; }
+    nav a:hover, nav a.active { color:var(--gold); border-left-color:var(--gold); background:rgba(201,168,76,0.05); }
+    .sidebar-footer { padding:20px; border-top:1px solid var(--dark-border); font-family:'Montserrat',sans-serif; font-size:0.55rem; color:var(--text-dim); letter-spacing:0.08em; text-transform:uppercase; text-align:center; }
+    .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:99; }
+    .sidebar-overlay.active { display:block; }
+
+    #main { margin-left:240px; }
+
+    /* HERO MATIN */
+    .matin-hero {
+      position: relative;
+      padding: 80px 60px 60px;
+      border-bottom: 1px solid var(--dark-border);
+      overflow: hidden;
+    }
+
+    .matin-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(201,168,76,0.05) 0%, transparent 70%);
+    }
+
+    .matin-time {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.55rem;
+      letter-spacing: 0.35em;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .matin-hero h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 900;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+
+    .matin-hero-sub {
+      font-family: 'Crimson Text', serif;
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--text-muted);
+      max-width: 500px;
+    }
+
+    .matin-date {
+      position: absolute;
+      top: 80px; right: 60px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      color: var(--gold-dim);
+      letter-spacing: 0.2em;
+    }
+
+    /* ÉTAPES */
+    .steps-container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 60px 60px 80px;
+    }
+
+    /* STEP */
+    .step {
+      margin-bottom: 48px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .step.visible { opacity: 1; transform: translateY(0); }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .step-num {
+      width: 32px; height: 32px;
+      border: 1px solid var(--gold-dim);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      flex-shrink: 0;
+    }
+
+    .step-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: 0.1em;
+    }
+
+    .step-latin {
+      font-family: 'Crimson Text', serif;
+      font-size: 0.85rem;
+      font-style: italic;
+      color: var(--gold-dim);
+      margin-left: 48px;
+      margin-bottom: 12px;
+    }
+
+    .step-body {
+      margin-left: 48px;
+    }
+
+    .step-instruction {
+      font-family: 'Crimson Text', serif;
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    textarea {
+      width: 100%;
+      background: var(--dark-card);
+      border: 1px solid var(--dark-border);
+      color: var(--text);
+      font-family: 'Crimson Text', Georgia, serif;
+      font-size: 1rem;
+      padding: 16px 20px;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+      line-height: 1.6;
+    }
+    textarea:focus { border-color: var(--gold-dim); }
+    textarea::placeholder { color:var(--text-dim); font-style:italic; }
+
+    input[type="text"] {
+      width: 100%;
+      background: var(--dark-card);
+      border: 1px solid var(--dark-border);
+      color: var(--text);
+      font-family: 'Crimson Text', Georgia, serif;
+      font-size: 1rem;
+      padding: 14px 20px;
+      outline: none;
+      transition: border-color 0.2s;
+      height: 52px;
+    }
+    input[type="text"]:focus { border-color: var(--gold-dim); }
+    input[type="text"]::placeholder { color:var(--text-dim); font-style:italic; }
+
+    /* VIRTUES GRID */
+    .virtues-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .virtue-item {
+      background: var(--dark-card);
+      border: 1px solid var(--dark-border);
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    .virtue-item:hover { border-color: var(--gold-dim); }
+
+    .virtue-item.selected {
+      background: rgba(201,168,76,0.08);
+      border-color: var(--gold);
+    }
+
+    .virtue-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .virtue-latin {
+      font-family: 'Crimson Text', serif;
+      font-size: 0.85rem;
+      font-style: italic;
+      color: var(--text-dim);
+    }
+
+    /* MEMENTO MORI */
+    .memento-block {
+      background: rgba(139,46,46,0.06);
+      border: 1px solid rgba(139,46,46,0.2);
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+
+    .memento-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.5rem;
+      letter-spacing: 0.25em;
+      color: rgba(139,46,46,0.7);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .memento-text {
+      font-family: 'Crimson Text', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* DIVIDER */
+    .step-divider {
+      height: 1px;
+      background: var(--dark-border);
+      margin: 40px 0;
+    }
+
+    /* SUBMIT */
+    .submit-zone {
+      margin-top: 48px;
+      text-align: center;
+    }
+
+    .btn-submit {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--dark);
+      background: var(--gold);
+      border: none;
+      padding: 18px 56px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 600;
+    }
+
+    .btn-submit:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(201,168,76,0.3);
+    }
+
+    .submit-hint {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.55rem;
+      color: var(--text-dim);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 12px;
+    }
+
+    .success-toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--dark-card);
+      border: 1px solid var(--gold-dim);
+      padding: 16px 32px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      transition: transform 0.4s ease;
+      z-index: 300;
+    }
+    .success-toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* CITATION DU JOUR */
+    .citation-du-jour {
+      background: rgba(201,168,76,0.03);
+      border-top: 1px solid var(--dark-border);
+      padding: 40px 60px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .citation-du-jour blockquote {
+      font-family: 'Crimson Text', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .citation-du-jour cite {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.55rem;
+      color: var(--gold-dim);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-style: normal;
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle { display:flex; }
+      #sidebar { transform:translateX(-100%); width:280px; }
+      #sidebar.open { transform:translateX(0); }
+      #main { margin-left:0; }
+      .matin-hero { padding:70px 24px 40px; }
+      .matin-date { position:static; margin-top:16px; display:block; }
+      .steps-container { padding:40px 24px 60px; }
+      .step-body { margin-left:0; margin-top:12px; }
+      .virtues-grid { grid-template-columns:1fr 1fr; }
+      .citation-du-jour { padding:32px 24px; }
+    }
+  </style>
 </head>
 <body>
-<header>
-<div class="logo">HEGEMONIKON <span>- le guide interieur</span></div>
-<nav>
-<a href="index.html">Accueil</a>
-<a href="matin.html" class="active">Matin</a>
-<a href="journal.html">Journal</a>
-<a href="archive.html">Archive</a>
-<a href="progres.html">Maitrise</a>
-</nav>
-</header>
-<main>
-<p class="eyebrow">Praemeditatio malorum</p>
-<h1>Rituel du Matin</h1>
-<p class="date" id="d"></p>
-<div class="citation">
-<p>Au lever du jour, dis-toi : je vais rencontrer un indiscret, un ingrat, un violent, un fourbe. Tout cela leur arrive par ignorance du bien et du mal.</p>
-<span>Marc Aurele - Pensees II.1</span>
-</div>
-<div class="qb">
-<p class="st">I - Obstacles probables</p>
-<p class="qh">Nommer l obstacle lui retire son pouvoir de surprise.</p>
-<div class="obs-grid">
-<div class="obs" onclick="this.classList.toggle('on')">Personne difficile</div>
-<div class="obs" onclick="this.classList.toggle('on')">Decision sous pression</div>
-<div class="obs" onclick="this.classList.toggle('on')">Critique</div>
-<div class="obs" onclick="this.classList.toggle('on')">Frustration</div>
-<div class="obs" onclick="this.classList.toggle('on')">Conflit</div>
-<div class="obs" onclick="this.classList.toggle('on')">Fatigue</div>
-</div>
-<textarea placeholder="Obstacle specifique..."></textarea>
-</div>
-<div class="qb">
-<p class="st">II - Ma reponse preparee</p>
-<textarea placeholder="Si cette situation se produit, je choisis de..."></textarea>
-</div>
-<div class="qb">
-<p class="st">III - Ce qui depend de moi</p>
-<textarea placeholder="Aujourd hui, ce qui depend de moi..."></textarea>
-</div>
-<div class="qb">
-<p class="st">Intention du jour</p>
-<textarea style="min-height:60px" placeholder="Aujourd hui, je veux etre... faire..."></textarea>
-</div>
-<p class="st">Mantra du jour</p>
-<div class="mantras">
-<div class="m" onclick="sel(this)"><p>Supporte et abstiens-toi.</p><small>Epictete</small></div>
-<div class="m" onclick="sel(this)"><p>L obstacle devient la voie.</p><small>Marc Aurele V</small></div>
-<div class="m" onclick="sel(this)"><p>Ce ne sont pas les choses qui troublent - c est l opinion.</p><small>Epictete V</small></div>
-<div class="m" onclick="sel(this)"><p>Garde ton guide interieur libre de toute passion.</p><small>Marc Aurele VII</small></div>
-</div>
-<button class="btn" onclick="sauv()">Sceller le rituel - entrer dans le jour</button>
-<div class="ok" id="ok"><p id="okt"></p></div>
+
+<button class="menu-toggle" id="menuToggle">☰</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="success-toast" id="successToast">✦ Rituel du matin accompli</div>
+
+<aside id="sidebar">
+  <div id="sidebar-logo">
+    <span class="logo-symbol">HEGEMONIKON</span>
+    <span class="logo-sub">Journal Stoïcien</span>
+    <span class="logo-handle">@AigleRoyal28</span>
+  </div>
+  <nav>
+    <a href="index.html">⚖ Tableau de Bord</a>
+    <a href="matin.html" class="active">☀ Rituel du Matin</a>
+    <a href="journal.html">📖 Journal du Soir</a>
+    <a href="archive.html">🗄 Archive</a>
+    <a href="progres.html">⚡ Progression</a>
+  </nav>
+  <div class="sidebar-footer">La faculté directrice de l'âme</div>
+</aside>
+
+<main id="main">
+
+  <div class="matin-hero">
+    <p class="matin-time">Rituel matinal · Praemeditatio Malorum</p>
+    <h1>RITUEL DU MATIN</h1>
+    <p class="matin-hero-sub">« Avant tout, pratique de dire à toi-même ce que tu vas faire. »</p>
+    <span class="matin-date" id="matinDate"></span>
+  </div>
+
+  <div class="steps-container">
+
+    <!-- ÉTAPE 1 : CITATION DU JOUR -->
+    <div class="step" id="step1">
+      <div class="step-header">
+        <div class="step-num">I</div>
+        <span class="step-title">Méditation d'ouverture</span>
+      </div>
+      <p class="step-latin">Prosochē — L'attention à soi</p>
+      <div class="step-body">
+        <div class="citation-du-jour" style="padding:0; background:none; border:none; margin:0 0 16px 0;">
+          <blockquote id="morningQuote"></blockquote>
+          <cite id="morningQuoteAuthor"></cite>
+        </div>
+        <textarea rows="3" id="meditation" placeholder="Ce que cette sagesse éveille en toi ce matin..."></textarea>
+      </div>
+    </div>
+
+    <div class="step-divider"></div>
+
+    <!-- ÉTAPE 2 : PRAEMEDITATIO -->
+    <div class="step" id="step2">
+      <div class="step-header">
+        <div class="step-num">II</div>
+        <span class="step-title">Praemeditatio Malorum</span>
+      </div>
+      <p class="step-latin">Anticiper les obstacles — les neutraliser par avance</p>
+      <div class="step-body">
+        <p class="step-instruction">Quels obstacles, difficultés ou perturbations pourrais-tu rencontrer aujourd'hui ? Visualise-les. Prépare ta réponse stoïcienne.</p>
+        <textarea rows="4" id="praemedatio" placeholder="Aujourd'hui je pourrais rencontrer... mais je choisirai de..."></textarea>
+      </div>
+    </div>
+
+    <div class="step-divider"></div>
+
+    <!-- ÉTAPE 3 : VERTU DU JOUR -->
+    <div class="step" id="step3">
+      <div class="step-header">
+        <div class="step-num">III</div>
+        <span class="step-title">Vertu du Jour</span>
+      </div>
+      <p class="step-latin">Les quatre vertus cardinales stoïciennes</p>
+      <div class="step-body">
+        <p class="step-instruction">Quelle vertu vas-tu cultiver et exercer activement aujourd'hui ?</p>
+        <div class="virtues-grid">
+          <div class="virtue-item" data-virtue="Prudence">
+            <div class="virtue-name">Prudence</div>
+            <div class="virtue-latin">Phronesis — Le discernement juste</div>
+          </div>
+          <div class="virtue-item" data-virtue="Justice">
+            <div class="virtue-name">Justice</div>
+            <div class="virtue-latin">Dikaiosyne — L'équité envers autrui</div>
+          </div>
+          <div class="virtue-item" data-virtue="Courage">
+            <div class="virtue-name">Courage</div>
+            <div class="virtue-latin">Andreia — La force d'âme</div>
+          </div>
+          <div class="virtue-item" data-virtue="Tempérance">
+            <div class="virtue-name">Tempérance</div>
+            <div class="virtue-latin">Sophrosyne — La maîtrise de soi</div>
+          </div>
+        </div>
+        <textarea rows="2" id="vertuAction" placeholder="Comment je vais exercer cette vertu concrètement..." style="margin-top:12px;"></textarea>
+      </div>
+    </div>
+
+    <div class="step-divider"></div>
+
+    <!-- ÉTAPE 4 : MEMENTO MORI -->
+    <div class="step" id="step4">
+      <div class="step-header">
+        <div class="step-num">IV</div>
+        <span class="step-title">Memento Mori</span>
+      </div>
+      <p class="step-latin">Souviens-toi que tu mourras — et vis pleinement</p>
+      <div class="step-body">
+        <div class="memento-block">
+          <p class="memento-label">Rappel stoïcien</p>
+          <p class="memento-text">« Tu pourrais quitter la vie en ce moment même. Laisse cela déterminer ce que tu fais, ce que tu dis, ce que tu penses. » — Marc Aurèle</p>
+        </div>
+        <textarea rows="3" id="mementomori" placeholder="Ce qui mérite vraiment mon attention et mon énergie aujourd'hui..."></textarea>
+      </div>
+    </div>
+
+    <div class="step-divider"></div>
+
+    <!-- ÉTAPE 5 : INTENTION -->
+    <div class="step" id="step5">
+      <div class="step-header">
+        <div class="step-num">V</div>
+        <span class="step-title">Intention du Jour</span>
+      </div>
+      <p class="step-latin">Une seule intention. Claire. Stoïcienne.</p>
+      <div class="step-body">
+        <p class="step-instruction">Quelle est la chose la plus importante que tu vas accomplir aujourd'hui, indépendamment des circonstances ?</p>
+        <input type="text" id="intention" placeholder="Aujourd'hui, quoi qu'il arrive, je vais...">
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-zone">
+      <button class="btn-submit" onclick="saveMatin()">Commencer la journée</button>
+      <p class="submit-hint">Le rituel est accompli · La journée peut commencer</p>
+    </div>
+
+  </div>
+
 </main>
+
 <script>
-const J=["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
-const M=["Janvier","Fevrier","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Decembre"];
-const n=new Date();
-document.getElementById("d").textContent=J[n.getDay()]+" "+n.getDate()+" "+M[n.getMonth()]+" "+n.getFullYear();
-function sel(el){document.querySelectorAll(".m").forEach(m=>m.classList.remove("on"));el.classList.add("on")}
-function sauv(){
-const a=JSON.parse(localStorage.getItem("hegemonikon_matin")||"[]");
-a.unshift({date:new Date().toISOString(),type:"matin"});
-localStorage.setItem("hegemonikon_matin",JSON.stringify(a));
-const msgs=["L ame est armee. Avance.","Rituel scelle. Va.","Tu es pret."];
-document.getElementById("okt").textContent=msgs[Math.floor(Math.random()*msgs.length)];
-const ok=document.getElementById("ok");
-ok.classList.add("v");setTimeout(()=>ok.classList.remove("v"),4000);
+// MOBILE
+const menuToggle = document.getElementById('menuToggle');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('sidebarOverlay');
+menuToggle.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('active'); });
+overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('active'); });
+
+// DATE
+const now = new Date();
+const dateStr = now.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+document.getElementById('matinDate').textContent = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+
+// CITATION DU MATIN
+const MORNING_QUOTES = [
+  { text: "Au lever du jour, dis-toi : je rencontrerai des indiscrets, des ingrats, des arrogants, des envieux, des insociaux. Ils n'ont aucun pouvoir sur toi.", author: "Marc Aurèle, Méditations" },
+  { text: "Commence chaque journée comme si ta vie entière en dépendait. Car elle en dépend.", author: "Sénèque, Lettres à Lucilius" },
+  { text: "Ne cherche pas que les choses arrivent comme tu le veux. Désire qu'elles arrivent comme elles arrivent — et tu seras en paix.", author: "Épictète, Manuel" },
+  { text: "Demande-toi à chaque instant : est-ce nécessaire ? Sinon, laisse-le.", author: "Marc Aurèle, Méditations" },
+  { text: "La plus grande puissance est de te dominer toi-même.", author: "Sénèque" },
+  { text: "Ce qui te trouble n'est pas la réalité, mais ton jugement sur la réalité. Et le jugement dépend de toi.", author: "Épictète, Manuel" },
+  { text: "Agis. Puis laisse aller. Le reste n'est pas en ton pouvoir.", author: "Marc Aurèle, Méditations" },
+];
+
+const idx = now.getDate() % MORNING_QUOTES.length;
+const q = MORNING_QUOTES[idx];
+document.getElementById('morningQuote').textContent = `« ${q.text} »`;
+document.getElementById('morningQuoteAuthor').textContent = `— ${q.author}`;
+
+// VIRTUES
+let selectedVirtue = '';
+document.querySelectorAll('.virtue-item').forEach(v => {
+  v.addEventListener('click', () => {
+    document.querySelectorAll('.virtue-item').forEach(x => x.classList.remove('selected'));
+    v.classList.add('selected');
+    selectedVirtue = v.dataset.virtue;
+  });
+});
+
+// ANIMATION AU SCROLL
+const steps = document.querySelectorAll('.step');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+steps.forEach(s => observer.observe(s));
+
+// Trigger first step immediately
+setTimeout(() => document.getElementById('step1').classList.add('visible'), 100);
+
+// SAVE
+function saveMatin() {
+  const entry = {
+    id: Date.now(),
+    type: 'matin',
+    date: now.toISOString().split('T')[0],
+    timestamp: now.toISOString(),
+    meditation: document.getElementById('meditation').value.trim(),
+    praemeditatio: document.getElementById('praemedatio').value.trim(),
+    vertu: selectedVirtue,
+    vertuAction: document.getElementById('vertuAction').value.trim(),
+    mementomori: document.getElementById('mementomori').value.trim(),
+    intention: document.getElementById('intention').value.trim(),
+  };
+
+  const all = JSON.parse(localStorage.getItem('hegemonikon_matin') || '[]');
+  all.unshift(entry);
+  localStorage.setItem('hegemonikon_matin', JSON.stringify(all));
+
+  const toast = document.getElementById('successToast');
+  toast.classList.add('show');
+  setTimeout(() => { toast.classList.remove('show'); window.location.href = 'index.html'; }, 2000);
 }
 </script>
 </body>
