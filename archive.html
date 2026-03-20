@@ -1,295 +1,370 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HEGEMONIKON — Archive</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --noir: #080808; --noir-card: #141414;
-    --bronze: #C9A84C; --bronze-dim: #8B6914; --bronze-pale: #e8d5a3;
-    --texte: #d4c9b0; --texte-dim: #7a7060; --texte-pale: #4a4438;
-    --or-ligne: rgba(201,168,76,0.2);
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--noir); color: var(--texte); font-family: 'Cormorant Garamond', Georgia, serif; min-height: 100vh; }
-  body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,168,76,0.04) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Archive — HEGEMONIKON</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C9A84C; --gold-light: #E8C96A; --gold-dim: #8A6E30;
+      --dark: #080808; --dark-mid: #111111; --dark-card: #181818;
+      --dark-border: #2A2A2A; --text: #E8E0D0; --text-muted: #7A7060; --text-dim: #4A4438;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--dark); color:var(--text); font-family:'Crimson Text',Georgia,serif; min-height:100vh; overflow-x:hidden; }
 
-  header { position: relative; z-index: 1; padding: 48px 32px 32px; display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1px solid var(--or-ligne); }
-  .logo { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 600; letter-spacing: 0.35em; color: var(--bronze); }
-  .logo span { color: var(--texte-dim); font-weight: 400; }
-  nav { display: flex; gap: 32px; }
-  nav a { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.25em; color: var(--texte-dim); text-decoration: none; text-transform: uppercase; transition: color 0.3s; }
-  nav a:hover { color: var(--bronze); }
-  nav a.active { color: var(--bronze-pale); }
+    .menu-toggle { display:none; position:fixed; top:16px; left:16px; z-index:200; background:var(--dark-card); border:1px solid var(--dark-border); color:var(--gold); width:44px; height:44px; border-radius:4px; cursor:pointer; font-size:1.2rem; align-items:center; justify-content:center; }
+    #sidebar { width:240px; min-height:100vh; background:var(--dark-mid); border-right:1px solid var(--dark-border); position:fixed; top:0; left:0; display:flex; flex-direction:column; padding:0 0 30px 0; z-index:100; transition:transform 0.3s ease; }
+    #sidebar-logo { padding:28px 20px 24px; border-bottom:1px solid var(--dark-border); text-align:center; }
+    #sidebar-logo .logo-symbol { font-family:'Cinzel',serif; font-size:1.1rem; font-weight:900; color:var(--gold); letter-spacing:0.15em; display:block; }
+    #sidebar-logo .logo-sub { font-family:'Montserrat',sans-serif; font-size:0.6rem; color:var(--text-muted); letter-spacing:0.25em; text-transform:uppercase; margin-top:4px; display:block; }
+    #sidebar-logo .logo-handle { font-family:'Montserrat',sans-serif; font-size:0.55rem; color:var(--text-dim); letter-spacing:0.1em; margin-top:6px; display:block; }
+    nav { padding:20px 0; flex:1; }
+    nav a { display:flex; align-items:center; gap:10px; padding:10px 20px; color:var(--text-muted); text-decoration:none; font-family:'Montserrat',sans-serif; font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; transition:all 0.2s; border-left:2px solid transparent; }
+    nav a:hover, nav a.active { color:var(--gold); border-left-color:var(--gold); background:rgba(201,168,76,0.05); }
+    .sidebar-footer { padding:20px; border-top:1px solid var(--dark-border); font-family:'Montserrat',sans-serif; font-size:0.55rem; color:var(--text-dim); letter-spacing:0.08em; text-transform:uppercase; text-align:center; }
+    .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:99; }
+    .sidebar-overlay.active { display:block; }
+    #main { margin-left:240px; }
 
-  main { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; padding: 64px 32px 80px; }
+    /* HEADER */
+    .page-header { padding:60px 60px 40px; border-bottom:1px solid var(--dark-border); }
+    .page-header-label { font-family:'Montserrat',sans-serif; font-size:0.55rem; letter-spacing:0.35em; color:var(--gold-dim); text-transform:uppercase; margin-bottom:12px; }
+    .page-header h1 { font-family:'Cinzel',serif; font-size:clamp(1.8rem, 4vw, 3rem); font-weight:900; color:var(--gold); letter-spacing:0.1em; margin-bottom:12px; }
+    .page-header-sub { font-family:'Crimson Text',serif; font-size:1.05rem; font-style:italic; color:var(--text-muted); }
 
-  .page-titre-bloc { margin-bottom: 48px; animation: fadeUp 0.8s ease both; }
-  .page-eyebrow { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--bronze-dim); text-transform: uppercase; margin-bottom: 12px; }
-  .page-titre { font-family: 'Cinzel', serif; font-size: clamp(24px, 4vw, 36px); font-weight: 400; color: var(--bronze-pale); letter-spacing: 0.1em; margin-bottom: 8px; }
-  .page-sous { font-style: italic; font-size: 15px; color: var(--texte-dim); }
+    /* TOOLBAR */
+    .toolbar { padding:24px 60px; border-bottom:1px solid var(--dark-border); display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+    .search-input { background:var(--dark-card); border:1px solid var(--dark-border); color:var(--text); font-family:'Crimson Text',serif; font-size:0.95rem; padding:10px 16px; outline:none; transition:border-color 0.2s; width:240px; }
+    .search-input:focus { border-color:var(--gold-dim); }
+    .search-input::placeholder { color:var(--text-dim); font-style:italic; }
+    .filter-btn { font-family:'Montserrat',sans-serif; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-muted); background:var(--dark-card); border:1px solid var(--dark-border); padding:10px 16px; cursor:pointer; transition:all 0.2s; }
+    .filter-btn:hover, .filter-btn.active { color:var(--gold); border-color:var(--gold-dim); background:rgba(201,168,76,0.05); }
+    .toolbar-spacer { flex:1; }
+    .export-btn { font-family:'Cinzel',serif; font-size:0.55rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-dim); background:transparent; border:1px solid rgba(201,168,76,0.2); padding:10px 20px; cursor:pointer; transition:all 0.2s; }
+    .export-btn:hover { color:var(--gold); border-color:var(--gold); }
+    .entry-count { font-family:'Montserrat',sans-serif; font-size:0.55rem; color:var(--text-dim); letter-spacing:0.12em; text-transform:uppercase; }
 
-  /* FILTRES */
-  .filtres {
-    display: flex; gap: 8px; flex-wrap: wrap;
-    margin-bottom: 40px;
-    animation: fadeUp 0.8s ease 0.1s both;
-  }
-  .filtre-btn {
-    font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.25em;
-    padding: 8px 16px; border: 1px solid var(--or-ligne);
-    background: transparent; color: var(--texte-dim);
-    cursor: pointer; text-transform: uppercase; transition: all 0.2s;
-  }
-  .filtre-btn:hover { border-color: var(--bronze-dim); color: var(--bronze); }
-  .filtre-btn.actif { border-color: var(--bronze); color: var(--bronze); background: rgba(201,168,76,0.05); }
+    /* ENTRIES LIST */
+    .entries-container { padding:0; }
 
-  /* LISTE ENTRÉES */
-  .entrees-liste { display: flex; flex-direction: column; gap: 2px; }
+    .entry-card {
+      border-bottom: 1px solid var(--dark-border);
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+    .entry-card:hover { background:rgba(201,168,76,0.02); }
 
-  .entree-card {
-    background: var(--noir-card);
-    border: 1px solid var(--or-ligne);
-    overflow: hidden;
-    transition: border-color 0.3s;
-    animation: fadeUp 0.6s ease both;
-  }
-  .entree-card:hover { border-color: var(--bronze-dim); }
+    .entry-card-header {
+      padding: 24px 60px 0;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
 
-  .entree-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 20px 24px; cursor: pointer; gap: 16px;
-  }
+    .entry-date {
+      font-family:'Cinzel',serif;
+      font-size:0.65rem;
+      color:var(--gold-dim);
+      letter-spacing:0.15em;
+      min-width:140px;
+    }
 
-  .entree-meta { display: flex; align-items: baseline; gap: 16px; flex: 1; min-width: 0; }
+    .entry-mastery-badge {
+      font-family:'Montserrat',sans-serif;
+      font-size:0.5rem;
+      letter-spacing:0.15em;
+      color:var(--text-dim);
+      text-transform:uppercase;
+      background:var(--dark-card);
+      border:1px solid var(--dark-border);
+      padding:3px 10px;
+    }
 
-  .entree-date {
-    font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.2em;
-    color: var(--bronze); white-space: nowrap;
-  }
+    .entry-triggers {
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      flex:1;
+    }
 
-  .entree-apercu {
-    font-style: italic; font-size: 14px; color: var(--texte-dim);
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    flex: 1;
-  }
+    .entry-trigger-tag {
+      font-family:'Montserrat',sans-serif;
+      font-size:0.45rem;
+      letter-spacing:0.1em;
+      color:var(--text-dim);
+      background:var(--dark-card);
+      border:1px solid var(--dark-border);
+      padding:2px 8px;
+      text-transform:uppercase;
+    }
 
-  .entree-niveau {
-    font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.2em;
-    color: var(--bronze-dim); white-space: nowrap;
-  }
+    .entry-card-body {
+      padding:16px 60px 24px;
+      display:none;
+    }
 
-  .entree-toggle {
-    font-size: 12px; color: var(--bronze-dim); transition: transform 0.3s;
-    flex-shrink: 0;
-  }
-  .entree-card.ouvert .entree-toggle { transform: rotate(180deg); }
+    .entry-card-body.open { display:block; }
 
-  .entree-corps {
-    display: none;
-    padding: 0 24px 24px;
-    border-top: 1px solid var(--or-ligne);
-  }
-  .entree-card.ouvert .entree-corps { display: block; }
+    .entry-card-preview {
+      padding:0 60px 20px;
+      font-family:'Crimson Text',serif;
+      font-size:0.95rem;
+      font-style:italic;
+      color:var(--text-muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
 
-  .corps-section { margin-top: 20px; }
-  .corps-label {
-    font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.3em;
-    color: var(--bronze-dim); text-transform: uppercase; margin-bottom: 8px;
-  }
-  .corps-texte {
-    font-style: italic; font-size: 16px; line-height: 1.7;
-    color: var(--texte-dim); white-space: pre-wrap;
-  }
+    .entry-q {
+      margin-bottom:20px;
+    }
 
-  .tags-affichage { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-  .tag-affiché {
-    font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.2em;
-    padding: 4px 10px; border: 1px solid var(--or-ligne);
-    color: var(--texte-pale); text-transform: uppercase;
-  }
+    .entry-q-label {
+      font-family:'Montserrat',sans-serif;
+      font-size:0.5rem;
+      letter-spacing:0.2em;
+      color:var(--gold-dim);
+      text-transform:uppercase;
+      margin-bottom:6px;
+    }
 
-  .entree-suppr {
-    font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.2em;
-    color: var(--texte-pale); background: none; border: 1px solid var(--or-ligne);
-    padding: 6px 12px; cursor: pointer; text-transform: uppercase;
-    margin-top: 20px; transition: all 0.2s;
-  }
-  .entree-suppr:hover { border-color: #8B2020; color: #c06060; }
+    .entry-q-text {
+      font-family:'Crimson Text',serif;
+      font-size:1rem;
+      color:var(--text);
+      line-height:1.65;
+    }
 
-  /* VIDE */
-  .vide-bloc {
-    text-align: center; padding: 80px 32px;
-    display: none;
-  }
-  .vide-bloc.visible { display: block; }
-  .vide-titre { font-family: 'Cinzel', serif; font-size: 18px; letter-spacing: 0.1em; color: var(--bronze-dim); margin-bottom: 12px; }
-  .vide-texte { font-style: italic; font-size: 16px; color: var(--texte-pale); }
+    .entry-wisdom {
+      background:rgba(201,168,76,0.04);
+      border-left:2px solid var(--gold-dim);
+      padding:12px 16px;
+      margin-top:16px;
+    }
 
-  /* EXPORT */
-  .export-barre {
-    display: flex; justify-content: flex-end; gap: 12px;
-    margin-bottom: 24px;
-    animation: fadeUp 0.8s ease 0.15s both;
-  }
-  .btn-export {
-    font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.25em;
-    padding: 8px 16px; border: 1px solid var(--or-ligne);
-    background: transparent; color: var(--texte-dim);
-    cursor: pointer; text-transform: uppercase; transition: all 0.2s;
-  }
-  .btn-export:hover { border-color: var(--bronze-dim); color: var(--bronze); }
+    .entry-wisdom-label {
+      font-family:'Montserrat',sans-serif;
+      font-size:0.45rem;
+      letter-spacing:0.2em;
+      color:var(--gold-dim);
+      text-transform:uppercase;
+      margin-bottom:6px;
+    }
 
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-  @media (max-width: 600px) { header { flex-direction: column; gap: 20px; } nav { gap: 16px; flex-wrap: wrap; } main { padding: 40px 16px 60px; } .entree-apercu { display: none; } }
-</style>
+    .entry-wisdom-text {
+      font-family:'Crimson Text',serif;
+      font-size:0.95rem;
+      font-style:italic;
+      color:var(--text-muted);
+    }
+
+    /* EMPTY STATE */
+    .empty-state {
+      padding:80px 60px;
+      text-align:center;
+    }
+
+    .empty-state-title {
+      font-family:'Cinzel',serif;
+      font-size:0.8rem;
+      letter-spacing:0.2em;
+      color:var(--gold-dim);
+      text-transform:uppercase;
+      margin-bottom:16px;
+    }
+
+    .empty-state-text {
+      font-family:'Crimson Text',serif;
+      font-size:1.05rem;
+      font-style:italic;
+      color:var(--text-dim);
+      margin-bottom:32px;
+    }
+
+    .btn-primary {
+      font-family:'Cinzel',serif; font-size:0.65rem; letter-spacing:0.25em; text-transform:uppercase;
+      color:var(--dark); background:var(--gold); border:none; padding:14px 32px;
+      cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s;
+    }
+    .btn-primary:hover { background:var(--gold-light); transform:translateY(-1px); }
+
+    @media (max-width:768px) {
+      .menu-toggle { display:flex; }
+      #sidebar { transform:translateX(-100%); width:280px; }
+      #sidebar.open { transform:translateX(0); }
+      #main { margin-left:0; }
+      .page-header { padding:70px 24px 32px; }
+      .toolbar { padding:16px 24px; }
+      .search-input { width:100%; }
+      .entry-card-header { padding:20px 24px 0; flex-wrap:wrap; }
+      .entry-card-preview { padding:0 24px 16px; }
+      .entry-card-body { padding:16px 24px 20px; }
+    }
+  </style>
 </head>
 <body>
-<header>
-  <div class="logo">HEGEMONIKON <span>— le guide intérieur</span></div>
+
+<button class="menu-toggle" id="menuToggle">☰</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<aside id="sidebar">
+  <div id="sidebar-logo">
+    <span class="logo-symbol">HEGEMONIKON</span>
+    <span class="logo-sub">Journal Stoïcien</span>
+    <span class="logo-handle">@AigleRoyal28</span>
+  </div>
   <nav>
-    <a href="index.html">Accueil</a>
-    <a href="matin.html">Matin</a>
-    <a href="journal.html">Journal</a>
-    <a href="archive.html" class="active">Archive</a>
-    <a href="progres.html">Maîtrise</a>
+    <a href="index.html">⚖ Tableau de Bord</a>
+    <a href="matin.html">☀ Rituel du Matin</a>
+    <a href="journal.html">📖 Journal du Soir</a>
+    <a href="archive.html" class="active">🗄 Archive</a>
+    <a href="progres.html">⚡ Progression</a>
   </nav>
-</header>
+  <div class="sidebar-footer">La faculté directrice de l'âme</div>
+</aside>
 
-<main>
-  <div class="page-titre-bloc">
-    <p class="page-eyebrow">Mémoire du combat — toutes les entrées</p>
-    <h1 class="page-titre">Archive des Jours</h1>
-    <p class="page-sous" id="compte-entrees">Chargement...</p>
+<main id="main">
+
+  <div class="page-header">
+    <p class="page-header-label">Mémoire de l'âme · Chaque entrée est une pierre posée</p>
+    <h1>ARCHIVE</h1>
+    <p class="page-header-sub">« Revenir sur ses pas, c'est aussi avancer. »</p>
   </div>
 
-  <div class="filtres">
-    <button class="filtre-btn actif" onclick="filtrer('tous', this)">Tous</button>
-    <button class="filtre-btn" onclick="filtrer('cette-semaine', this)">Cette semaine</button>
-    <button class="filtre-btn" onclick="filtrer('ce-mois', this)">Ce mois</button>
-    <button class="filtre-btn" onclick="filtrer('niveau-4', this)">Niveau IV</button>
-    <button class="filtre-btn" onclick="filtrer('niveau-3', this)">Niveau III</button>
+  <div class="toolbar">
+    <input class="search-input" type="text" id="searchInput" placeholder="Rechercher dans les entrées...">
+    <button class="filter-btn active" data-filter="all" onclick="setFilter('all', this)">Tout</button>
+    <button class="filter-btn" data-filter="high" onclick="setFilter('high', this)">Maîtrise ≥ 7</button>
+    <button class="filter-btn" data-filter="low" onclick="setFilter('low', this)">Maîtrise ≤ 4</button>
+    <button class="filter-btn" data-filter="month" onclick="setFilter('month', this)">Ce mois</button>
+    <div class="toolbar-spacer"></div>
+    <span class="entry-count" id="entryCount">0 entrées</span>
+    <button class="export-btn" onclick="exportJSON()">↓ Exporter JSON</button>
   </div>
 
-  <div class="export-barre">
-    <button class="btn-export" onclick="exporterJSON()">Exporter JSON</button>
-  </div>
+  <div class="entries-container" id="entriesContainer"></div>
 
-  <div class="entrees-liste" id="entrees-liste"></div>
-  <div class="vide-bloc" id="vide-bloc">
-    <p class="vide-titre">Aucune entrée</p>
-    <p class="vide-texte">Le premier pas forge la citadelle. Commence ce soir.</p>
-  </div>
 </main>
 
 <script>
-const NIVEAUX = { 1: 'I — Réactif', 2: 'II — Conscient', 3: 'III — Maître', 4: 'IV — Inébranlable' };
-let filtreCourant = 'tous';
-let toutesEntrees = [];
+// MOBILE
+const menuToggle = document.getElementById('menuToggle');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('sidebarOverlay');
+menuToggle.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('active'); });
+overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('active'); });
 
-function chargerEntrees() {
-  toutesEntrees = JSON.parse(localStorage.getItem('hegemonikon_entries') || '[]');
-  afficher(toutesEntrees);
+// DATA
+let allEntries = JSON.parse(localStorage.getItem('hegemonikon_entries') || '[]');
+let currentFilter = 'all';
+let searchQuery = '';
+
+// SEARCH
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchQuery = e.target.value.toLowerCase();
+  render();
+});
+
+// FILTER
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
 }
 
-function filtrer(type, btn) {
-  filtreCourant = type;
-  document.querySelectorAll('.filtre-btn').forEach(b => b.classList.remove('actif'));
-  btn.classList.add('actif');
+// FILTER LOGIC
+function getFiltered() {
+  let filtered = [...allEntries];
 
-  const now = new Date();
-  let filtrees = toutesEntrees;
-
-  if (type === 'cette-semaine') {
-    const lundi = new Date(now); lundi.setDate(now.getDate() - now.getDay() + 1); lundi.setHours(0,0,0,0);
-    filtrees = toutesEntrees.filter(e => new Date(e.date) >= lundi);
-  } else if (type === 'ce-mois') {
-    filtrees = toutesEntrees.filter(e => {
-      const d = new Date(e.date);
-      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-    });
-  } else if (type === 'niveau-4') {
-    filtrees = toutesEntrees.filter(e => e.niveau === 4);
-  } else if (type === 'niveau-3') {
-    filtrees = toutesEntrees.filter(e => e.niveau === 3);
+  if (currentFilter === 'high') filtered = filtered.filter(e => e.mastery >= 7);
+  if (currentFilter === 'low') filtered = filtered.filter(e => e.mastery && e.mastery <= 4);
+  if (currentFilter === 'month') {
+    const now = new Date();
+    const monthStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+    filtered = filtered.filter(e => (e.date||'').startsWith(monthStr));
   }
 
-  afficher(filtrees);
+  if (searchQuery) {
+    filtered = filtered.filter(e =>
+      (e.q1||'').toLowerCase().includes(searchQuery) ||
+      (e.q2||'').toLowerCase().includes(searchQuery) ||
+      (e.q3||'').toLowerCase().includes(searchQuery) ||
+      (e.intention||'').toLowerCase().includes(searchQuery) ||
+      (e.wisdom||'').toLowerCase().includes(searchQuery)
+    );
+  }
+
+  return filtered;
 }
 
-function afficher(entrees) {
-  const liste = document.getElementById('entrees-liste');
-  const vide = document.getElementById('vide-bloc');
-  const compte = document.getElementById('compte-entrees');
+// RENDER
+function render() {
+  const filtered = getFiltered();
+  const container = document.getElementById('entriesContainer');
+  document.getElementById('entryCount').textContent = filtered.length + ' entrée' + (filtered.length !== 1 ? 's' : '');
 
-  liste.innerHTML = '';
-  compte.textContent = entrees.length + ' entrée' + (entrees.length !== 1 ? 's' : '');
-
-  if (entrees.length === 0) {
-    vide.classList.add('visible');
-    return;
-  }
-  vide.classList.remove('visible');
-
-  entrees.forEach((e, i) => {
-    const d = new Date(e.date);
-    const jours = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
-    const mois = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
-    const dateStr = jours[d.getDay()] + ' ' + d.getDate() + ' ' + mois[d.getMonth()] + ' ' + d.getFullYear();
-    const apercu = e.q1 || e.q2 || e.q3 || e.libre || '—';
-    const niveauStr = e.niveau ? NIVEAUX[e.niveau] : '—';
-
-    const card = document.createElement('div');
-    card.className = 'entree-card';
-    card.style.animationDelay = (i * 0.04) + 's';
-    card.innerHTML = `
-      <div class="entree-header" onclick="toggleCard(this.parentElement)">
-        <div class="entree-meta">
-          <span class="entree-date">${dateStr}</span>
-          <span class="entree-apercu">${apercu.substring(0, 80)}...</span>
-        </div>
-        <span class="entree-niveau">${niveauStr}</span>
-        <span class="entree-toggle">▼</span>
-      </div>
-      <div class="entree-corps">
-        ${e.q1 ? `<div class="corps-section"><p class="corps-label">I — Quel mal ai-je guéri ?</p><p class="corps-texte">${e.q1}</p></div>` : ''}
-        ${e.q2 ? `<div class="corps-section"><p class="corps-label">II — Vice résisté ou cédé ?</p><p class="corps-texte">${e.q2}</p></div>` : ''}
-        ${e.q3 ? `<div class="corps-section"><p class="corps-label">III — En quoi meilleur ?</p><p class="corps-texte">${e.q3}</p></div>` : ''}
-        ${e.libre ? `<div class="corps-section"><p class="corps-label">Espace libre</p><p class="corps-texte">${e.libre}</p></div>` : ''}
-        ${e.declencheurs && e.declencheurs.length ? `<div class="corps-section"><p class="corps-label">Déclencheurs</p><div class="tags-affichage">${e.declencheurs.map(t => `<span class="tag-affiché">${t}</span>`).join('')}</div></div>` : ''}
-        <button class="entree-suppr" onclick="supprimerEntree(${toutesEntrees.indexOf(e)})">Supprimer cette entrée</button>
+  if (!filtered.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <p class="empty-state-title">Aucune entrée</p>
+        <p class="empty-state-text">Le silence précède toute sagesse. Commence ton premier examen du soir.</p>
+        <a href="journal.html" class="btn-primary">Écrire maintenant</a>
       </div>
     `;
-    liste.appendChild(card);
-  });
+    return;
+  }
+
+  container.innerHTML = filtered.map((e, i) => {
+    const d = new Date(e.timestamp || e.date);
+    const dateLabel = d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    const preview = e.q1 || e.q2 || e.q3 || '—';
+    const triggers = (e.triggers || []).filter(t => t !== 'Aucun').slice(0, 4);
+
+    return `
+      <div class="entry-card" onclick="toggleEntry(${i})">
+        <div class="entry-card-header">
+          <span class="entry-date">${dateLabel.charAt(0).toUpperCase() + dateLabel.slice(1)}</span>
+          ${e.mastery ? `<span class="entry-mastery-badge">Maîtrise ${e.mastery}/10</span>` : ''}
+          <div class="entry-triggers">
+            ${triggers.map(t => `<span class="entry-trigger-tag">${t}</span>`).join('')}
+          </div>
+        </div>
+        <div class="entry-card-preview">${preview}</div>
+        <div class="entry-card-body" id="body-${i}">
+          ${e.q1 ? `<div class="entry-q"><div class="entry-q-label">En quoi ai-je été mauvais ?</div><div class="entry-q-text">${e.q1}</div></div>` : ''}
+          ${e.q2 ? `<div class="entry-q"><div class="entry-q-label">En quoi ai-je été fort ?</div><div class="entry-q-text">${e.q2}</div></div>` : ''}
+          ${e.q3 ? `<div class="entry-q"><div class="entry-q-label">Qu'ai-je laissé passer ?</div><div class="entry-q-text">${e.q3}</div></div>` : ''}
+          ${e.intention ? `<div class="entry-q"><div class="entry-q-label">Intention du lendemain</div><div class="entry-q-text">${e.intention}</div></div>` : ''}
+          ${e.wisdom ? `<div class="entry-wisdom"><div class="entry-wisdom-label">Sagesse retenue</div><div class="entry-wisdom-text">${e.wisdom}</div></div>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
-function toggleCard(card) {
-  card.classList.toggle('ouvert');
+function toggleEntry(i) {
+  const body = document.getElementById(`body-${i}`);
+  body.classList.toggle('open');
 }
 
-function supprimerEntree(index) {
-  if (!confirm('Supprimer cette entrée définitivement ?')) return;
-  toutesEntrees.splice(index, 1);
-  localStorage.setItem('hegemonikon_entries', JSON.stringify(toutesEntrees));
-  afficher(toutesEntrees);
-}
-
-function exporterJSON() {
-  const data = JSON.stringify(toutesEntrees, null, 2);
-  const blob = new Blob([data], { type: 'application/json' });
+// EXPORT
+function exportJSON() {
+  const data = JSON.stringify(allEntries, null, 2);
+  const blob = new Blob([data], { type:'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'hegemonikon-archive-' + new Date().toISOString().split('T')[0] + '.json';
+  a.download = `hegemonikon_archive_${new Date().toISOString().split('T')[0]}.json`;
   a.click();
   URL.revokeObjectURL(url);
 }
 
-chargerEntrees();
+render();
 </script>
 </body>
 </html>
