@@ -981,22 +981,22 @@ overlay.addEventListener('click', () => {
 // CITATIONS
 // ═══════════════════════════════════════
 const CITATIONS = [
-  { text: "L'obstacle devient le chemin. Marche.", author: "Marc Aurèle", source: "Méditations" },
-  { text: "Au hasard tu contrôles tes pensées. Tout le reste est bruit.", author: "Marc Aurèle", source: "Méditations" },
-  { text: "Ce n'est pas que le temps manque. C'est qu'on le gaspille.", author: "Sénèque", source: "Lettres à Lucilius" },
-  { text: "Tout dépend de toi. Seulement de toi.", author: "Épictète", source: "Manuel" },
-  { text: "Nul ne peut te blesser sans ta permission.", author: "Marc Aurèle", source: "Méditations" },
-  { text: "Vois ce qui arrive. Tu seras toujours victorieux.", author: "Sénèque", source: "Lettres à Lucilius" },
-  { text: "Le bonheur naît dans tes pensées. Nulle part ailleurs.", author: "Épictète", source: "Manuel" },
-  { text: "L'âme devient ce qu'elle côtoie chaque jour.", author: "Marc Aurèle", source: "Méditations" },
-  { text: "Commence. Le courage vient en faisant.", author: "Sénèque", source: "Lettres à Lucilius" },
-  { text: "Ne cherche pas la paix. Construis-la en toi.", author: "Sénèque", source: "Lettres à Lucilius" },
-  { text: "Connais tes chaînes. C'est ainsi qu'on les brise.", author: "Épictète", source: "Entretiens" },
-  { text: "Chaque jour est une vie. Vis-le entier.", author: "Marc Aurèle", source: "Méditations" },
-  { text: "Ce qui ne peut être dit brièvement ne mérite pas d'être dit.", author: "Sénèque", source: "Lettres à Lucilius" },
-  { text: "Supporte et abstiens-toi. C'est toute la philosophie.", author: "Épictète", source: "Entretiens" },
-  { text: "Perds-toi dans le présent. C'est là que tu existes.", author: "Marc Aurèle", source: "Méditations" },
-  { text: "La fortune frappe celui qui lui fait confiance.", author: "Sénèque", source: "De la brièveté de la vie" },
+  { text: "L'obstacle devient le chemin. Marche.", author: "Marc Aurèle", source: "Méditations", lien: "https://macdubh28.github.io/marc-aurele/marc-aurele.html" },
+  { text: "Au hasard tu contrôles tes pensées. Tout le reste est bruit.", author: "Marc Aurèle", source: "Méditations", lien: "https://macdubh28.github.io/marc-aurele/marc-aurele.html" },
+  { text: "Ce n'est pas que le temps manque. C'est qu'on le gaspille.", author: "Sénèque", source: "Lettres à Lucilius", lien: "https://macdubh28.github.io/marc-aurele/seneque.html" },
+  { text: "Tout dépend de toi. Seulement de toi.", author: "Épictète", source: "Manuel", lien: "https://macdubh28.github.io/marc-aurele/epictete.html" },
+  { text: "Nul ne peut te blesser sans ta permission.", author: "Marc Aurèle", source: "Méditations", lien: "https://macdubh28.github.io/marc-aurele/marc-aurele.html" },
+  { text: "Vois ce qui arrive. Tu seras toujours victorieux.", author: "Sénèque", source: "Lettres à Lucilius", lien: "https://macdubh28.github.io/marc-aurele/seneque.html" },
+  { text: "Le bonheur naît dans tes pensées. Nulle part ailleurs.", author: "Épictète", source: "Manuel", lien: "https://macdubh28.github.io/marc-aurele/epictete.html" },
+  { text: "L'âme devient ce qu'elle côtoie chaque jour.", author: "Marc Aurèle", source: "Méditations", lien: "https://macdubh28.github.io/marc-aurele/marc-aurele.html" },
+  { text: "Commence. Le courage vient en faisant.", author: "Sénèque", source: "Lettres à Lucilius", lien: "https://macdubh28.github.io/marc-aurele/seneque.html" },
+  { text: "Ne cherche pas la paix. Construis-la en toi.", author: "Sénèque", source: "Lettres à Lucilius", lien: "https://macdubh28.github.io/marc-aurele/seneque.html" },
+  { text: "Connais tes chaînes. C'est ainsi qu'on les brise.", author: "Épictète", source: "Entretiens", lien: "https://macdubh28.github.io/marc-aurele/epictete.html" },
+  { text: "Chaque jour est une vie. Vis-le entier.", author: "Marc Aurèle", source: "Méditations", lien: "https://macdubh28.github.io/marc-aurele/marc-aurele.html" },
+  { text: "Ce qui ne peut être dit brièvement ne mérite pas d'être dit.", author: "Sénèque", source: "Lettres à Lucilius", lien: "https://macdubh28.github.io/marc-aurele/seneque.html" },
+  { text: "Supporte et abstiens-toi. C'est toute la philosophie.", author: "Épictète", source: "Entretiens", lien: "https://macdubh28.github.io/marc-aurele/epictete.html" },
+  { text: "Perds-toi dans le présent. C'est là que tu existes.", author: "Marc Aurèle", source: "Méditations", lien: "https://macdubh28.github.io/marc-aurele/marc-aurele.html" },
+  { text: "La fortune frappe celui qui lui fait confiance.", author: "Sénèque", source: "De la brièveté de la vie", lien: "https://macdubh28.github.io/marc-aurele/seneque.html" },
 ];
 
 // Citation héro du jour
@@ -1020,6 +1020,7 @@ const shown = shuffleArray(CITATIONS).slice(0, 8);
 shown.forEach(c => {
   const div = document.createElement('div');
   div.className = 'citation-card';
+  if (c.lien) { div.style.cursor='pointer'; div.onclick=()=>window.open(c.lien,'_blank'); }
   div.innerHTML = `
     <div class="citation-bar"></div>
     <p class="citation-text">« ${c.text} »</p>
